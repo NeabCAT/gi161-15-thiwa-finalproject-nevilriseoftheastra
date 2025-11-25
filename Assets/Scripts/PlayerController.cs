@@ -1,36 +1,66 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement Settings")]
-    public float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 1f;
 
-    [Header("Components")]
-    private Rigidbody2D rb;
-    private Animator anim;
+    private PlayerControls playerControls;
     private Vector2 movement;
+    private Rigidbody2D rb;
+    private Animator myAnimator;
+    private SpriteRenderer mySpriteRender;
 
-    void Start()
+    private void Awake()
     {
+        playerControls = new PlayerControls();
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        myAnimator = GetComponent<Animator>();
+        mySpriteRender = GetComponent<SpriteRenderer>();
     }
 
-    void Update()
+    private void OnEnable()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        playerControls.Enable();
+    }
 
-        if (anim != null)
+    private void Update()
+    {
+        PlayerInput();
+    }
+
+    private void FixedUpdate()
+    {
+        AdjustPlayerFacingDirection();
+        Move();
+    }
+
+    private void PlayerInput()
+    {
+        movement = playerControls.Movement.Move.ReadValue<Vector2>();
+
+        myAnimator.SetFloat("moveX", movement.x);
+        myAnimator.SetFloat("moveY", movement.y);
+    }
+
+    private void Move()
+    {
+        rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
+    }
+
+    private void AdjustPlayerFacingDirection()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
+
+        if (mousePos.x < playerScreenPoint.x)
         {
-            anim.SetFloat("Horizontal", movement.x);
-            anim.SetFloat("Vertical", movement.y);
-            anim.SetFloat("Speed", movement.sqrMagnitude);
+            mySpriteRender.flipX = true;
         }
-    }
-
-    void FixedUpdate()
-    {
-        rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
+        else
+        {
+            mySpriteRender.flipX = false;
+        }
     }
 }
