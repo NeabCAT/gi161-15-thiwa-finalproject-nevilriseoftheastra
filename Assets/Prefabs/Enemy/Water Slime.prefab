@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2780523691262194517}
   - component: {fileID: 1142302939817620944}
   - component: {fileID: 1552694714522656849}
+  - component: {fileID: 3206593636174437161}
   m_Layer: 0
   m_Name: Water Slime
   m_TagString: Untagged
@@ -208,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc5128f8387e59d4fb185d0faefe5a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPathfinding
-  moveSpeed: 0
+  moveSpeed: 2
 --- !u!114 &1142302939817620944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,6 +236,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Knockback
   knockBackTime: 0.2
+--- !u!114 &3206593636174437161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2150712642738146909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: befcd284092e9d54fab9d64bdee5c0e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Flash
+  whiteFlashMat: {fileID: 2100000, guid: 67b8f68d83437624e811dfaa85353b87, type: 2}
+  restoreDefaultMatTime: 0.2
 --- !u!1 &6859305544902021541
 GameObject:
   m_ObjectHideFlags: 0
