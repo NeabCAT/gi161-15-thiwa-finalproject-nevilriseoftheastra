@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     [Header("Character Stats")]
-    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private int maxHealth = 5;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float attackSpeed = 1f;
     [SerializeField] private float attackPower = 10f;
