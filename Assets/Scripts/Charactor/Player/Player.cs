@@ -1,149 +1,139 @@
-using UnityEngine;
-
-public enum ClassType
-{
-    Striker,
-    Arcanist,
-    AstraChanneler
-}
+﻿using UnityEngine;
 
 public class Player : Character
 {
     [Header("Player Specific")]
-    [SerializeField] private ClassType selectedClass;
-    [SerializeField] private int maxMana = 100;
+    [SerializeField] private ClassType selectedClass = ClassType.None;
+    [SerializeField] private int mana = 100;
 
-    // Properties
-    public ClassType SelectedClass => selectedClass;
-    public int CurrentMana { get; private set; }
-    public int MaxMana => maxMana;
+    [Header("Weapon Holder")]
+    [SerializeField] private Transform weaponHolder;
+
+    [Header("Class Prefabs")]
+    [SerializeField] private GameObject strikerPrefab;
+    [SerializeField] private GameObject arcanistPrefab;
+    [SerializeField] private GameObject astraCharmPrefab;
+
+    private BaseClass currentClassInstance;
+    private int maxMana;
+    private PlayerController playerController;
 
     protected override void Awake()
     {
         base.Awake();
-        CurrentMana = maxMana;
-    }
+        maxMana = mana;
+        playerController = GetComponent<PlayerController>();
 
-    private void Update()
-    {
-        HandleInput();
-    }
-
-    private void HandleInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-            Attack();
-
-        if (Input.GetKeyDown(KeyCode.E))
-            UseSkill();
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-            Dodge();
-
-        if (Input.GetMouseButtonDown(0))
-            Shoot();
+        if (weaponHolder == null)
+        {
+            Debug.LogError("❌ [Player] Weapon Holder ยังไม่ได้ลากใส่!");
+        }
     }
 
     public void SelectClass(ClassType classType)
     {
+        Debug.Log($"🎯 [Player] กำลังเลือกคลาส: {classType}");
+
         selectedClass = classType;
-        Debug.Log($"Selected class: {classType}");
-    }
 
-    public void Attack()
-    {
-        if (IsDead) return;
+        // ลบคลาสเก่า
+        if (currentClassInstance != null)
+        {
+            Destroy(currentClassInstance.gameObject);
+        }
 
-        Debug.Log($"{SelectedClass} attacks!");
+        if (weaponHolder == null)
+        {
+            Debug.LogError("❌ [Player] ไม่มี Weapon Holder!");
+            return;
+        }
 
-        // �� Anim ᷹ anim (Property �ҡ Character class)
-        if (Anim != null)
-            Anim.SetTrigger("Attack");
+        // ⭐ สร้างคลาสจาก Prefab
+        GameObject classPrefab = null;
+
+        switch (classType)
+        {
+            case ClassType.Striker:
+                classPrefab = strikerPrefab;
+                break;
+
+            case ClassType.Arcanist:
+                classPrefab = arcanistPrefab;
+                break;
+
+            case ClassType.AstraCharm:
+                classPrefab = astraCharmPrefab;
+                break;
+        }
+
+        if (classPrefab != null)
+        {
+            // Instantiate จาก Prefab
+            GameObject classObject = Instantiate(classPrefab, transform);
+            currentClassInstance = classObject.GetComponent<BaseClass>();
+
+            if (currentClassInstance != null)
+            {
+                Debug.Log($"✅ [Player] สร้างคลาส {classType} จาก Prefab!");
+                currentClassInstance.Initialize(this, weaponHolder);
+            }
+            else
+            {
+                Debug.LogError($"❌ [Player] Prefab ไม่มี BaseClass component!");
+            }
+        }
+        else
+        {
+            Debug.LogError($"❌ [Player] ไม่มี Prefab สำหรับคลาส {classType}!");
+        }
     }
 
     public void UseSkill()
     {
-        if (IsDead) return;
-
-        if (CurrentMana >= 20)
+        if (currentClassInstance != null)
         {
-            CurrentMana -= 20;
-            Debug.Log($"{SelectedClass} uses skill! Mana remaining: {CurrentMana}");
-
-            if (Anim != null)
-                Anim.SetTrigger("Skill");
-        }
-        else
-        {
-            Debug.Log("Not enough mana!");
+            currentClassInstance.UseSkill();
         }
     }
 
-    public void RestoreMana(int amount)
+    public void Attack()
     {
-        CurrentMana = Mathf.Min(maxMana, CurrentMana + amount);
-        Debug.Log($"Mana restored! Current: {CurrentMana}/{MaxMana}");
+        if (currentClassInstance != null)
+        {
+            currentClassInstance.Attack();
+        }
     }
 
     public void Dodge()
     {
-        if (IsDead) return;
+        Debug.Log("🏃 [Player] Dodge!");
+    }
 
-        Debug.Log("Player dodges!");
-
-        if (Anim != null)
-            Anim.SetTrigger("Dodge");
+    public void OnHitWithEnemy()
+    {
+        Debug.Log("⚔️ [Player] ชนกับศัตรู!");
+        TakeDamage(10);
     }
 
     public void Shoot()
     {
-        if (IsDead) return;
-
-        Debug.Log($"{SelectedClass} shoots!");
-
-        if (Anim != null)
-            Anim.SetTrigger("Shoot");
+        Debug.Log("🎯 [Player] ยิง!");
     }
 
-    // Override ����Ͷ١����
-    protected override void OnDamageTaken(int amount)
+    public override void IsDead()
     {
-        base.OnDamageTaken(amount);
-
-        if (Anim != null)
-            Anim.SetTrigger("Hit");
+        Debug.Log("💀 [Player] ตาย!");
+        gameObject.SetActive(false);
     }
 
-    // Trigger Collision
-    private void OnTriggerEnter2D(Collider2D collision)
+    public int Mana
     {
-        if (collision.CompareTag("Item"))
-        {
-            HandleItemPickup(collision);
-        }
-
-        if (collision.CompareTag("Enemy"))
-        {
-            HandleEnemyCollision(collision);
-        }
+        get { return mana; }
+        set { mana = Mathf.Clamp(value, 0, maxMana); }
     }
 
-    private void HandleItemPickup(Collider2D collision)
+    public ClassType SelectedClass
     {
-        Item item = collision.GetComponent<Item>();
-        if (item != null)
-        {
-            item.OnPickup(this);
-        }
-    }
-
-    private void HandleEnemyCollision(Collider2D collision)
-    {
-        Enemy enemy = collision.GetComponent<Enemy>();
-        if (enemy != null)
-        {
-            Debug.Log("Player hit by enemy!");
-            // Enemy �ШѴ��� damage � OnCollisionEnter2D �ͧ�ѹ�ͧ
-        }
+        get { return selectedClass; }
     }
 }

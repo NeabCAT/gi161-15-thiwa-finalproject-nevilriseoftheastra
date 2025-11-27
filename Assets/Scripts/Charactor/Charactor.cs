@@ -1,85 +1,57 @@
-using UnityEngine;
+๏ปฟusing UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
     [Header("Character Stats")]
-    [SerializeField] private int maxHealth = 5;
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float attackSpeed = 1f;
-    [SerializeField] private float attackPower = 10f;
-    [SerializeField] private float attackRange = 1f;
+    [SerializeField] protected int health = 100;
+    [SerializeField] protected float attackSpeed = 1f;
+    [SerializeField] protected float attackPower = 10f;
+    [SerializeField] protected float attackRange = 2f;
 
-    // Encapsulation: ใช้ Properties แทนการเข้าถึงตัวแปรโดยตรง
-    public int MaxHealth => maxHealth;
-    public int CurrentHealth { get; private set; }
-    public float MoveSpeed => moveSpeed;
-    public float AttackSpeed => attackSpeed;
-    public float AttackPower => attackPower;
-    public float AttackRange => attackRange;
-    public bool IsDead => CurrentHealth <= 0;
-
-    // Protected Components
-    protected Animator Anim { get; private set; }
-    protected Rigidbody2D Rb { get; private set; }
+    protected int maxHealth;
+    protected Animator anim;
 
     protected virtual void Awake()
     {
-        InitializeComponents();
-        InitializeStats();
+        maxHealth = health;
+        anim = GetComponent<Animator>();
     }
 
-    // แยก method ตามหน้าที่ชัดเจน
-    private void InitializeComponents()
+    public virtual void TakeDamage(int damage)
     {
-        Anim = GetComponent<Animator>();
-        Rb = GetComponent<Rigidbody2D>();
-    }
+        health -= damage;
+        Debug.Log($"โค๏ธ [{GetType().Name}] เธฃเธฑเธเธ”เธฒเน€เธกเธ {damage} | HP: {health}/{maxHealth}");
 
-    private void InitializeStats()
-    {
-        CurrentHealth = maxHealth;
-    }
-
-    // Polymorphism: method ที่สามารถ override ได้
-    public virtual void TakeDamage(int amount)
-    {
-        if (IsDead) return;
-
-        CurrentHealth = Mathf.Max(0, CurrentHealth - amount);
-        OnDamageTaken(amount);
-
-        if (IsDead)
+        if (health <= 0)
         {
-            Die();
+            IsDead();
         }
     }
 
-    // Template Method Pattern: แยก logic ย่อย
-    protected virtual void OnDamageTaken(int amount)
+    public abstract void IsDead();
+
+    // Properties
+    public int Health
     {
-        Debug.Log($"{gameObject.name} took {amount} damage. Health: {CurrentHealth}/{MaxHealth}");
+        get { return health; }
+        set { health = Mathf.Clamp(value, 0, maxHealth); }
     }
 
-    public virtual void Heal(int amount)
+    public float AttackSpeed
     {
-        if (IsDead) return;
-
-        CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + amount);
-        OnHealed(amount);
+        get { return attackSpeed; }
+        set { attackSpeed = value; }
     }
 
-    protected virtual void OnHealed(int amount)
+    public float AttackPower
     {
-        Debug.Log($"{gameObject.name} healed {amount}. Health: {CurrentHealth}/{MaxHealth}");
+        get { return attackPower; }
+        set { attackPower = value; }
     }
 
-    protected virtual void Die()
+    public float AttackRange
     {
-        Debug.Log($"{gameObject.name} has died!");
-        OnDeath();
-        Destroy(gameObject);
+        get { return attackRange; }
+        set { attackRange = value; }
     }
-
-    // Hook method สำหรับ subclass
-    protected virtual void OnDeath() { }
 }

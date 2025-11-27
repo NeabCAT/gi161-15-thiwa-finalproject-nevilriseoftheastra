@@ -1,21 +1,12 @@
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public abstract class Item : MonoBehaviour
 {
-    [Header("Item Properties")]
-    public string itemType;
-    public int value;
-    public Sprite sprite;
+    [Header("Item Settings")]
+    [SerializeField] protected string itemType;
+    [SerializeField] protected int value;
+    [SerializeField] protected Sprite sprite;
 
-    public void OnPickup(Player player)
-    {
-        Debug.Log($"Player picked up {itemType}");
-        ApplyEffect();
-        Destroy(gameObject);
-    }
-
-    public void ApplyEffect()
-    {
-        Debug.Log($"Applied effect: {itemType} with value {value}");
-    }
+    public abstract void OnPickup(Player player);
+    public abstract void ApplyEffect();
 }

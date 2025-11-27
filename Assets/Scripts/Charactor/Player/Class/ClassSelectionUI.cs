@@ -1,0 +1,108 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+public class ClassSelectionUI : MonoBehaviour
+{
+    [Header("UI Panels")]
+    [SerializeField] private GameObject dialoguePanel;
+    [SerializeField] private GameObject selectionPanel;
+
+    [Header("Dialogue")]
+    [SerializeField] private TextMeshProUGUI speakerText;
+    [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] private Button nextButton;
+
+    [Header("Class Buttons")]
+    [SerializeField] private Button strikerButton;
+    [SerializeField] private Button arcanistButton;
+    [SerializeField] private Button astraCharmButton;
+
+    [Header("Class Info")]
+    [SerializeField] private TextMeshProUGUI strikerInfo;
+    [SerializeField] private TextMeshProUGUI arcanistInfo;
+    [SerializeField] private TextMeshProUGUI astraCharmInfo;
+
+    private AstraShard currentShard;
+    private int dialogueIndex = 0;
+    private string[] dialogues =
+    {
+        "เจ้าพบฉันแล้ว... ผู้ถูกเลือก",
+        "ฉันคือเศษดาวแห่งชะตากรรม ผู้จะมอบพลังให้แก่ผู้สมควร",
+        "จงเลือกเส้นทางของเจ้า และรับพลังที่เหมาะสม"
+    };
+
+    void Start()
+    {
+        dialoguePanel.SetActive(false);
+        selectionPanel.SetActive(false);
+
+        nextButton.onClick.AddListener(OnNextDialogue);
+        strikerButton.onClick.AddListener(() => OnClassSelected(ClassType.Striker));
+        arcanistButton.onClick.AddListener(() => OnClassSelected(ClassType.Arcanist));
+        astraCharmButton.onClick.AddListener(() => OnClassSelected(ClassType.AstraCharm));
+
+        strikerInfo.text = "⚔️ Striker\nนักรบกล้า\nHP: 150 | DMG: 25";
+        arcanistInfo.text = "🔮 Arcanist\nจอมเวทย์\nHP: 80 | DMG: 40";
+        astraCharmInfo.text = "🏹 Astra Charm\nนักธนู\nHP: 100 | DMG: 20";
+    }
+
+    public void ShowSelection(AstraShard shard, ClassType[] availableClasses)
+    {
+        currentShard = shard;
+        dialogueIndex = 0;
+
+        PausePlayer(true);
+
+        dialoguePanel.SetActive(true);
+        speakerText.text = "Astra Shard";
+        dialogueText.text = dialogues[0];
+    }
+
+    void OnNextDialogue()
+    {
+        dialogueIndex++;
+
+        if (dialogueIndex < dialogues.Length)
+        {
+            dialogueText.text = dialogues[dialogueIndex];
+        }
+        else
+        {
+            dialoguePanel.SetActive(false);
+            selectionPanel.SetActive(true);
+        }
+    }
+
+    void OnClassSelected(ClassType classType)
+    {
+        Debug.Log($"✨ [UI] เลือกคลาส: {classType}");
+
+        selectionPanel.SetActive(false);
+
+        Player player = FindObjectOfType<Player>();
+        if (currentShard != null && player != null)
+        {
+            currentShard.GrantPower(player, classType);
+        }
+
+        PausePlayer(false);
+    }
+
+    void PausePlayer(bool pause)
+    {
+        PlayerController controller = FindObjectOfType<PlayerController>();
+        if (controller != null)
+        {
+            controller.enabled = !pause;
+        }
+
+        Player player = FindObjectOfType<Player>();
+        if (player != null)
+        {
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            if (rb != null && pause)
+                rb.velocity = Vector2.zero;
+        }
+    }
+}
