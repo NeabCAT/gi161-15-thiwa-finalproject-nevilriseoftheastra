@@ -2,8 +2,8 @@
 
 public class AstraCharm : BaseClass
 {
-    [Header("Astra Charm Settings")]
-    [SerializeField] private float arrowSpeed = 15f;
+    //[Header("Astra Charm Settings")]
+    //[SerializeField] private float arrowSpeed = 15f;
 
     protected override void ApplyClassStats()
     {

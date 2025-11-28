@@ -2035,7 +2035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &664481341
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3105,6 +3105,7 @@ MonoBehaviour:
   moveSpeed: 5
   dashSpeed: 4
   myTrailRenderer: {fileID: 869556671}
+  weaponCollider: {fileID: 0}
 --- !u!212 &851504283
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3300,7 +3301,7 @@ MonoBehaviour:
   mana: 100
   weaponHolder: {fileID: 1320240231}
   strikerPrefab: {fileID: 6982889988647922449, guid: bbefd51ce4fcbae4eab0fab3671259b8, type: 3}
-  arcanistPrefab: {fileID: 0}
+  arcanistPrefab: {fileID: 6982889988647922449, guid: 0b38ebe58720fe941abd4c274557db6f, type: 3}
   astraCharmPrefab: {fileID: 0}
 --- !u!114 &851504290
 MonoBehaviour:
@@ -25270,6 +25271,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1320240231}
   - component: {fileID: 1320240232}
+  - component: {fileID: 1320240233}
   m_Layer: 0
   m_Name: Active Weapons
   m_TagString: Untagged
@@ -25305,7 +25307,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6771de040563d4c4f880da7ee3fe6d85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActiveWeapons
-  currentWeapon: {fileID: 0}
+  currentWeaponObject: {fileID: 0}
+  currentActiveWeapon: {fileID: 0}
+--- !u!114 &1320240233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320240230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e08dc67c1e15b7f489964b6e8217ead5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MouseFollow
 --- !u!4 &1347795184 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 753906073026908382, guid: 2e144717e4389e54c8b5534612ab18c5, type: 3}

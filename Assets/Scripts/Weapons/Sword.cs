@@ -1,33 +1,28 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Sword : MonoBehaviour
+public class Sword : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject slashAnimPrefab;
     [SerializeField] private string slashAnimSpawnPointName = "SlashAnimationSpawnPoints";
     [SerializeField] private string weaponColliderName = "WeaponCollider";
-    [SerializeField] private float swordAttackCD = .5f;
+
+    // ⭐ ไม่ต้องมี [SerializeField] เพราะจะถูกส่งมาจาก ActiveWeapons
+    private WeaponInfo weaponInfo;
 
     private Transform slashAnimSpawnPoint;
     private Transform weaponCollider;
-    private PlayerControls playerControls;
     private Animator myAnimator;
     private PlayerController playerController;
     private ActiveWeapons activeWeapon;
-    private bool attackButtonDown, isAttacking = false;
     private GameObject slashAnim;
 
     private void Awake()
     {
-        // ⭐ หา slashAnimSpawnPoint (ลองทั้ง 2 แบบ)
         if (slashAnimSpawnPoint == null && transform.parent != null)
         {
-            Debug.Log("🔍 [Sword] กำลังหา SlashAnimationSpawnPoints...");
-
-            // ลองหาจาก Parent ก่อน (1 ชั้น)
             slashAnimSpawnPoint = transform.parent.Find("SlashAnimationSpawnPoints");
 
-            // ถ้าไม่เจอ ลองหาจาก Parent ของ Parent (2 ชั้น)
             if (slashAnimSpawnPoint == null && transform.parent.parent != null)
             {
                 Transform playerTransform = transform.parent.parent;
@@ -40,19 +35,14 @@ public class Sword : MonoBehaviour
             }
             else
             {
-                Debug.LogError("❌ [Sword] ไม่พบ SlashAnimationSpawnPoints ทั้ง 2 แบบ!");
+                Debug.LogError("❌ [Sword] ไม่พบ SlashAnimationSpawnPoints!");
             }
         }
 
-        // ⭐ หา weaponCollider (ลองทั้ง 2 แบบ)
         if (weaponCollider == null && transform.parent != null)
         {
-            Debug.Log("🔍 [Sword] กำลังหา WeaponCollider...");
-
-            // ลองหาจาก Parent ก่อน (1 ชั้น)
             weaponCollider = transform.parent.Find("WeaponCollider");
 
-            // ถ้าไม่เจอ ลองหาจาก Parent ของ Parent (2 ชั้น)
             if (weaponCollider == null && transform.parent.parent != null)
             {
                 Transform playerTransform = transform.parent.parent;
@@ -65,89 +55,58 @@ public class Sword : MonoBehaviour
             }
             else
             {
-                Debug.LogError("❌ [Sword] ไม่พบ WeaponCollider ทั้ง 2 แบบ!");
+                Debug.LogError("❌ [Sword] ไม่พบ WeaponCollider!");
             }
         }
 
-        // ส่วนที่เหลือเหมือนเดิม...
         playerController = GetComponentInParent<PlayerController>();
         activeWeapon = GetComponentInParent<ActiveWeapons>();
         myAnimator = GetComponent<Animator>();
-        playerControls = new PlayerControls();
-    }
-
-    private void OnEnable()
-    {
-        if (playerControls != null)
-        {
-            playerControls.Enable();
-            Debug.Log("✅ [Sword] PlayerControls Enabled!");
-        }
-    }
-
-    void Start()
-    {
-        if (playerControls != null)
-        {
-            playerControls.Combat.Attack.started += _ => StartAttacking();
-            playerControls.Combat.Attack.canceled += _ => StopAttacking();
-            Debug.Log("✅ [Sword] ผูก Attack Input สำเร็จ!");
-        }
-        else
-        {
-            Debug.LogError("❌ [Sword] PlayerControls เป็น null!");
-        }
     }
 
     private void Update()
     {
         MouseFollowWithOffset();
-        Attack();
     }
 
-    private void StartAttacking()
+    // ⭐ ฟังก์ชันใหม่: ให้ ActiveWeapons เรียกเพื่อส่ง WeaponInfo มาให้
+    public void SetWeaponInfo(WeaponInfo info)
     {
-        attackButtonDown = true;
-        Debug.Log("🎮 [Sword] Start Attacking!");
-    }
-
-    private void StopAttacking()
-    {
-        attackButtonDown = false;
-        Debug.Log("🎮 [Sword] Stop Attacking!");
-    }
-
-    private void Attack()
-    {
-        if (attackButtonDown && !isAttacking)
+        weaponInfo = info;
+        if (weaponInfo != null)
         {
-            Debug.Log("⚔️ [Sword] Attack!");
-            isAttacking = true;
-
-            if (myAnimator != null)
-            {
-                myAnimator.SetTrigger("Attack");
-            }
-
-            if (weaponCollider != null)
-            {
-                weaponCollider.gameObject.SetActive(true);
-            }
-
-            if (slashAnimPrefab != null && slashAnimSpawnPoint != null)
-            {
-                slashAnim = Instantiate(slashAnimPrefab, slashAnimSpawnPoint.position, Quaternion.identity);
-                slashAnim.transform.parent = this.transform.parent;
-            }
-
-            StartCoroutine(AttackCDRoutine());
+            Debug.Log($"✅ [Sword] ได้รับ WeaponInfo | Cooldown: {weaponInfo.weaponCooldown}s");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ [Sword] ไม่มี WeaponInfo!");
         }
     }
 
-    private IEnumerator AttackCDRoutine()
+    public WeaponInfo GetWeaponInfo()
     {
-        yield return new WaitForSeconds(swordAttackCD);
-        isAttacking = false;
+        return weaponInfo;
+    }
+
+    public void Attack()
+    {
+        Debug.Log("⚔️ [Sword] Attack!");
+
+        if (myAnimator != null)
+        {
+            myAnimator.SetTrigger("Attack");
+        }
+
+        if (weaponCollider != null)
+        {
+            weaponCollider.gameObject.SetActive(true);
+        }
+
+        if (slashAnimPrefab != null && slashAnimSpawnPoint != null)
+        {
+            slashAnim = Instantiate(slashAnimPrefab, slashAnimSpawnPoint.position, Quaternion.identity);
+            slashAnim.transform.parent = this.transform.parent;
+        }
     }
 
     public void DoneAttackingAnimEvent()
@@ -205,16 +164,6 @@ public class Sword : MonoBehaviour
             {
                 weaponCollider.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (playerControls != null)
-        {
-            playerControls.Combat.Attack.started -= _ => StartAttacking();
-            playerControls.Combat.Attack.canceled -= _ => StopAttacking();
-            playerControls.Disable();
         }
     }
 }
