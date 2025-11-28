@@ -6,11 +6,19 @@ public class Book : MonoBehaviour, IWeapon
 {
     private SpriteRenderer spriteRenderer;
     [SerializeField] private WeaponInfo weaponInfo;
+    [SerializeField] private GameObject magicLaser;
+    [SerializeField] private Transform magicLaserSpawnPoint;
+
+
+    private Animator myAnimator;
+
+    readonly int AttackHash = Animator.StringToHash("Attack");
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        myAnimator = GetComponent<Animator>();
     }
+
 
     private void Update()
     {
@@ -19,12 +27,20 @@ public class Book : MonoBehaviour, IWeapon
 
     public void Attack()
     {
-        Debug.Log("Book Attack");
+        myAnimator.SetTrigger(AttackHash);
     }
+    public void SpawnStaffProjectileAnimEvent()
+    {
+        GameObject newLaser = Instantiate(magicLaser, magicLaserSpawnPoint.position, Quaternion.identity);
+        newLaser.GetComponent<MagicLaser>().UpdateLaserRange(weaponInfo.weaponRange);
+
+    }
+
     public WeaponInfo GetWeaponInfo()
     {
         return weaponInfo;
     }
+
 
 
     private void MouseFollowWithOffset()

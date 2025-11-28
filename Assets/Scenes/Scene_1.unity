@@ -3302,7 +3302,7 @@ MonoBehaviour:
   weaponHolder: {fileID: 1320240231}
   strikerPrefab: {fileID: 6982889988647922449, guid: bbefd51ce4fcbae4eab0fab3671259b8, type: 3}
   arcanistPrefab: {fileID: 6982889988647922449, guid: 0b38ebe58720fe941abd4c274557db6f, type: 3}
-  astraCharmPrefab: {fileID: 0}
+  astraCharmPrefab: {fileID: 6982889988647922449, guid: 1a581f6585d46de43822ef26046628c0, type: 3}
 --- !u!114 &851504290
 MonoBehaviour:
   m_ObjectHideFlags: 0

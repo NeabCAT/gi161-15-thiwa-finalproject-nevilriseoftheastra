@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b6236bb80a29249bdd35fe9df46cd2, type: 3}
   m_Name: Book
   m_EditorClassIdentifier: Assembly-CSharp::WeaponInfo
-  weaponPrefab: {fileID: 0}
-  weaponCooldown: 0
+  weaponPrefab: {fileID: 6639611332983571786, guid: 575bdce1bf7bfa24992704abf95f7af6, type: 3}
+  weaponCooldown: 1
+  weaponDamage: 5
+  weaponRange: 12
