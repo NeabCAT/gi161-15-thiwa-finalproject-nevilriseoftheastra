@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 109353203770045261}
   - component: {fileID: 1584872965309643170}
   - component: {fileID: 4235335997817322088}
+  - component: {fileID: -9058123659790870744}
+  - component: {fileID: 3928647063427341887}
   m_Layer: 0
   m_Name: Mushroom
   m_TagString: Untagged
@@ -128,3 +130,51 @@ CapsuleCollider2D:
   m_Offset: {x: 0.000000020509347, y: -0.32795522}
   m_Size: {x: 1.3125002, y: 0.66339}
   m_Direction: 1
+--- !u!114 &-9058123659790870744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4733469215696607421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f54e2b391d32d72419f197c0587439c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Indestructible
+--- !u!58 &3928647063427341887
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4733469215696607421}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.96875

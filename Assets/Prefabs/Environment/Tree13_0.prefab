@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8092024935275510046}
   - component: {fileID: 1657699092815491713}
   - component: {fileID: 6212326333950731763}
+  - component: {fileID: -6610135091025260515}
   m_Layer: 0
   m_Name: Tree13_0
   m_TagString: Untagged
@@ -180,3 +181,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TransparentDetection
   transparencyAmount: 0.8
   fadeTime: 0.4
+--- !u!114 &-6610135091025260515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640143772483719656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f54e2b391d32d72419f197c0587439c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Indestructible

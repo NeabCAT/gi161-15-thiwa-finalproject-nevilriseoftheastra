@@ -56447,6 +56447,7 @@ GameObject:
   - component: {fileID: 1859190364}
   - component: {fileID: 1859190363}
   - component: {fileID: 1859190362}
+  - component: {fileID: 1859190367}
   m_Layer: 0
   m_Name: Foreground_Out
   m_TagString: Untagged
@@ -74868,6 +74869,18 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1859190367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859190360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f54e2b391d32d72419f197c0587439c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Indestructible
 --- !u!4 &1860004191 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 109353203770045261, guid: 931a8e23b728c6a4e96ef623ec86ea9a, type: 3}
