@@ -1,31 +1,39 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public abstract class Character : MonoBehaviour
+public class Character : MonoBehaviour
 {
     [Header("Character Stats")]
+    [SerializeField] protected int maxHealth = 2;
     protected int health;
-    protected int maxHealth;
-    protected Animator anim;
 
     // Properties
+    public int Health
+    {
+        get { return health; }
+        set { health = Mathf.Clamp(value, 0, maxHealth); }
+    }
+
     public int MaxHealth
     {
         get { return maxHealth; }
         set
         {
             maxHealth = value;
-            health = maxHealth; 
+            health = Mathf.Min(health, maxHealth); // ⭐ ปรับ health ถ้าเกิน maxHealth ใหม่
         }
     }
+
     protected virtual void Awake()
     {
-        anim = GetComponent<Animator>();
+        health = maxHealth; // ⭐ เพิ่มบรรทัดนี้ให้ health เริ่มต้นเท่ากับ maxHealth
     }
 
     public virtual void TakeDamage(int damage)
     {
         health -= damage;
-        Debug.Log($"❤️ [{GetType().Name}] รับดาเมจ {damage} | HP: {health}/{maxHealth}");
+        Debug.Log($"{gameObject.name} took {damage} damage. Current HP: {health}/{maxHealth}");
 
         if (health <= 0)
         {
@@ -33,6 +41,10 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    public abstract void IsDead();
+    public virtual void IsDead()
+    {
+        Debug.Log($"{gameObject.name} is dead!");
+        Destroy(gameObject);
+    }
 
 }

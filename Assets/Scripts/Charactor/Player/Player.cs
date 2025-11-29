@@ -1,9 +1,10 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : Character
 {
-    // ⭐ เพิ่ม Singleton Pattern
     public static Player Instance { get; private set; }
 
     [Header("Player Specific")]
@@ -28,10 +29,17 @@ public class Player : Character
     private bool canTakeDamage = true;
     private Knockback knockback;
     private Flash flash;
+    private Slider healthSlider;
+    private Animator animator;
+    private bool isDead = false;
+
+    private void Start()
+    {
+        UpdateHealthSlider();
+    }
 
     protected override void Awake()
     {
-        // ⭐ Singleton Setup
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -44,13 +52,13 @@ public class Player : Character
         playerController = GetComponent<PlayerController>();
         flash = GetComponent<Flash>();
         knockback = GetComponent<Knockback>();
+        animator = GetComponent<Animator>();
     }
 
     public void SelectClass(ClassType classType)
     {
         selectedClass = classType;
 
-        // ลบคลาสเก่า
         if (currentClassInstance != null)
         {
             Destroy(currentClassInstance.gameObject);
@@ -61,7 +69,6 @@ public class Player : Character
             return;
         }
 
-        // เลือก Prefab ตามอาชีพ
         GameObject classPrefab = null;
         switch (classType)
         {
@@ -76,7 +83,6 @@ public class Player : Character
                 break;
         }
 
-        // สร้างคลาสใหม่
         if (classPrefab != null)
         {
             GameObject classObject = Instantiate(classPrefab, transform);
@@ -116,15 +122,20 @@ public class Player : Character
 
     public override void TakeDamage(int damage)
     {
-        if (!canTakeDamage) return;
+        if (!canTakeDamage || isDead) return;
 
         ScreenShakeManager.Instance.ShakeScreen();
         base.TakeDamage(damage);
+
+        UpdateHealthSlider();
+
         StartCoroutine(DamageRecoveryRoutine());
     }
 
     private void OnCollisionStay2D(Collision2D other)
     {
+        if (isDead) return;
+
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
 
         if (enemy && canTakeDamage)
@@ -152,13 +163,74 @@ public class Player : Character
 
     public override void IsDead()
     {
+        if (isDead) return;
+        isDead = true;
+
         Debug.Log("💀 Player ตาย!");
+
+        // ปิดการเคลื่อนที่
+        if (playerController != null)
+        {
+            playerController.enabled = false;
+        }
+
+        // ปิด Collider
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null)
+        {
+            col.enabled = false;
+        }
+
+        // เล่น Death Animation
+        StartCoroutine(DeathAnimationRoutine());
+    }
+
+    private IEnumerator DeathAnimationRoutine()
+    {
+        // ⭐ ใช้ Animator Trigger
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+
+            // รอให้ Animation เล่นจบ
+            yield return new WaitForSeconds(1f);
+        }
+        else
+        {
+            // Fallback: ใช้ Code Animation
+            float duration = 1f;
+            float elapsed = 0f;
+            Vector3 startScale = transform.localScale;
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+            Color startColor = sprite != null ? sprite.color : Color.white;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+
+                transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t);
+                transform.Rotate(0, 0, 360f * Time.deltaTime);
+
+                if (sprite != null)
+                {
+                    Color newColor = startColor;
+                    newColor.a = Mathf.Lerp(1f, 0f, t);
+                    sprite.color = newColor;
+                }
+
+                yield return null;
+            }
+        }
+
+        Debug.Log("🎬 Death Animation จบแล้ว");
         gameObject.SetActive(false);
     }
 
-    // ⭐ ปรับปรุง HealPlayer ให้ดีขึ้น
     public void HealPlayer(int amount = 1)
     {
+        if (isDead) return;
+
         int oldHealth = health;
         health = Mathf.Min(health + amount, maxHealth);
         int actualHealed = health - oldHealth;
@@ -166,6 +238,7 @@ public class Player : Character
         if (actualHealed > 0)
         {
             Debug.Log($"💚 Healed +{actualHealed} HP | Current: {health}/{maxHealth}");
+            UpdateHealthSlider();
         }
         else
         {
@@ -173,7 +246,20 @@ public class Player : Character
         }
     }
 
-    // Properties
+    private void UpdateHealthSlider()
+    {
+        if (healthSlider == null)
+        {
+            healthSlider = GameObject.Find("Health Slider").GetComponent<Slider>();
+        }
+
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = health;
+        }
+    }
+
     public int Mana
     {
         get { return mana; }

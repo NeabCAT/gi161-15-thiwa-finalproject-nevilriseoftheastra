@@ -9,8 +9,10 @@ public class Arcanist : BaseClass
     {
         if (player != null)
         {
-            player.MaxHealth = 3; // ⚠️ แก้จาก player.Health
+            player.MaxHealth = 3;
+            player.Health = player.MaxHealth; // ⭐ เพิ่มบรรทัดนี้
             player.Mana = 150;
+            Debug.Log($"✨ [Arcanist] Stats Applied - HP:{player.Health}/{player.MaxHealth}, Mana:{player.Mana}");
         }
     }
 

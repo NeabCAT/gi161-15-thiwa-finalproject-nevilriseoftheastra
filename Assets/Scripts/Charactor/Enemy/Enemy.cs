@@ -15,9 +15,14 @@ public class Enemy : Character
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private bool stopMovingWhileAttacking = false;
 
+    [Header("Death Animation")]
+    [SerializeField] private float deathAnimationDuration = 1f; // ⭐ เพิ่ม: ความยาว Animation
+
     private Knockback knockback;
     private Flash flash;
     private EnemyPathfinding enemyPathfinding;
+    private Animator animator; // ⭐ เพิ่ม: Animator
+    private bool isDead = false; // ⭐ เพิ่ม: ป้องกันตายซ้ำ
 
     private bool canAttack = true;
     private Vector2 roamPosition;
@@ -37,6 +42,7 @@ public class Enemy : Character
         flash = GetComponent<Flash>();
         knockback = GetComponent<Knockback>();
         enemyPathfinding = GetComponent<EnemyPathfinding>();
+        animator = GetComponent<Animator>(); // ⭐ เพิ่ม: หา Animator
 
         MaxHealth = startingHealth;
         state = State.Roaming;
@@ -49,7 +55,10 @@ public class Enemy : Character
 
     private void Update()
     {
-        MovementStateControl();
+        if (!isDead) // ⭐ เพิ่ม: ไม่ให้เคลื่อนที่ตอนตายแล้ว
+        {
+            MovementStateControl();
+        }
     }
 
     private void MovementStateControl()
@@ -137,6 +146,8 @@ public class Enemy : Character
 
     public override void TakeDamage(int damage)
     {
+        if (isDead) return; // ⭐ เพิ่ม: ไม่รับดาเมจตอนตายแล้ว
+
         base.TakeDamage(damage);
 
         if (knockback != null && PlayerController.Instance != null)
@@ -167,12 +178,81 @@ public class Enemy : Character
 
     public override void IsDead()
     {
+        if (isDead) return; // ⭐ ป้องกันเรียกซ้ำ
+        isDead = true;
+
+        Debug.Log($"💀 [{gameObject.name}] ตาย!");
+
+        // ⭐ ปิดการเคลื่อนที่
+        if (enemyPathfinding != null)
+        {
+            enemyPathfinding.StopMoving();
+            enemyPathfinding.enabled = false;
+        }
+
+        // ⭐ ปิด Collider
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null)
+        {
+            col.enabled = false;
+        }
+
+        // ⭐ เล่น Death Animation
+        StartCoroutine(DeathAnimationRoutine());
+    }
+
+    // ⭐ เพิ่ม: Coroutine สำหรับ Death Animation
+    private IEnumerator DeathAnimationRoutine()
+    {
+        // เล่น Death Animation
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+            yield return new WaitForSeconds(deathAnimationDuration);
+        }
+        else
+        {
+            // Fallback: ใช้ Code Animation ถ้าไม่มี Animator
+            float elapsed = 0f;
+            Vector3 startScale = transform.localScale;
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+            Color startColor = sprite != null ? sprite.color : Color.white;
+
+            while (elapsed < deathAnimationDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / deathAnimationDuration;
+
+                // ย่อขนาด + หมุน
+                transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t);
+                transform.Rotate(0, 0, 360f * Time.deltaTime);
+
+                // จางหาย
+                if (sprite != null)
+                {
+                    Color newColor = startColor;
+                    newColor.a = Mathf.Lerp(1f, 0f, t);
+                    sprite.color = newColor;
+                }
+
+                yield return null;
+            }
+        }
+
+        // ⭐ Spawn VFX
         if (deathVFXPrefab != null)
         {
             Instantiate(deathVFXPrefab, transform.position, Quaternion.identity);
         }
 
-        Debug.Log($"💀 [{gameObject.name}] ตาย!");
+        // ⭐ Drop Items
+        PickUpSpawner pickUpSpawner = GetComponent<PickUpSpawner>();
+        if (pickUpSpawner != null)
+        {
+            pickUpSpawner.DropItems();
+        }
+
+        // ⭐ ทำลาย GameObject
         Destroy(gameObject);
     }
 }

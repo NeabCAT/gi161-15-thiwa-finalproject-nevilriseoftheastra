@@ -595,7 +595,7 @@ GameObject:
   - component: {fileID: 213968311}
   - component: {fileID: 213968310}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Stamina Globe Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -633,7 +633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7721081, g: 1, b: 0.36470592, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -719,6 +719,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8512068078307204640, guid: 9b397a1357a476449b28d2d5369ec335, type: 3}
   m_PrefabInstance: {fileID: 2110812752}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &273155247 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 488931489834980210, guid: 0fd8905f53e0c5240a3ea1f599ee80a2, type: 3}
+  m_PrefabInstance: {fileID: 5457003434278347472}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &310092387 stripped
 Transform:
@@ -1122,7 +1127,7 @@ GameObject:
   - component: {fileID: 510595310}
   - component: {fileID: 510595309}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: Stamina Globe Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1160,7 +1165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.77254903, g: 1, b: 0.36862746, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1890,6 +1895,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714119642}
   m_CullTransparentMesh: 1
+--- !u!1 &723775632
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 723775633}
+  - component: {fileID: 723775634}
+  m_Layer: 0
+  m_Name: Economy Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &723775633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723775632}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 273155247}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &723775634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723775632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8c0de8cb9c907c4888b47377d2da777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EconomyManager
 --- !u!1001 &726714637
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2233,7 +2282,7 @@ GameObject:
   - component: {fileID: 900941307}
   - component: {fileID: 900941306}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Gold Amount Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2458,7 +2507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2876196758714064483, guid: 40c3e37748df90742ad83df3dad05901, type: 3}
       propertyPath: angleSpread
-      value: 109
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2876196758714064483, guid: 40c3e37748df90742ad83df3dad05901, type: 3}
       propertyPath: bulletMoveSpeed
@@ -2515,7 +2564,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 864274303106416892, guid: 40c3e37748df90742ad83df3dad05901, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2040073303}
   m_SourcePrefab: {fileID: 100100000, guid: 40c3e37748df90742ad83df3dad05901, type: 3}
 --- !u!1 &976783713
 GameObject:
@@ -2529,7 +2581,7 @@ GameObject:
   - component: {fileID: 976783716}
   - component: {fileID: 976783715}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Stamina Globe Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2567,7 +2619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.77254903, g: 1, b: 0.36862746, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2913,6 +2965,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1442231940886634434, guid: 89ff5b0f06847c34a99e81bb13f75bbe, type: 3}
   m_PrefabInstance: {fileID: 1145699786}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1146533326 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2150712642738146909, guid: 07899bbb5e299ce4ea6e0dae0969d711, type: 3}
+  m_PrefabInstance: {fileID: 2060340068}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1146533337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146533326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a5ce724dac348a449a0be0bf8f0f1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickUpSpawner
+  goldCoin: {fileID: 8431709808952348351, guid: a0c62d8dbc1dcbf4594fd4c4ffca2c55, type: 3}
+  healthGlobe: {fileID: 0}
+  staminaGlobe: {fileID: 0}
 --- !u!1 &1149559765
 GameObject:
   m_ObjectHideFlags: 0
@@ -54801,6 +54873,26 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89ff5b0f06847c34a99e81bb13f75bbe, type: 3}
+--- !u!1 &1791584645 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5951978137330740390, guid: 6e271eed7ca15174ebd67508177076bc, type: 3}
+  m_PrefabInstance: {fileID: 2919591259145394543}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1791584656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791584645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2bc93996bd866e40ab1426600623675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stamina
+  fullStaminaImage: {fileID: -7799045602948881875, guid: 1a4f40d519625e34ead6df293404bf4e, type: 3}
+  emptyStaminaImage: {fileID: 4634418647378881802, guid: 9a86539b76de0a944859f4031a553dd9, type: 3}
+  timeBetweenStaminaRefresh: 3
 --- !u!4 &1825706633 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3490716778394147788, guid: b8c4d7ae0165ef046a28e22ec43667ec, type: 3}
@@ -75918,6 +76010,26 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 931a8e23b728c6a4e96ef623ec86ea9a, type: 3}
+--- !u!1 &2040073290 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 864274303106416892, guid: 40c3e37748df90742ad83df3dad05901, type: 3}
+  m_PrefabInstance: {fileID: 962231654}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2040073303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040073290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a5ce724dac348a449a0be0bf8f0f1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickUpSpawner
+  goldCoin: {fileID: 0}
+  healthGlobe: {fileID: 8431709808952348351, guid: 13cedf2ddd8d90e4b9e1a1e7f3d45a17, type: 3}
+  staminaGlobe: {fileID: 0}
 --- !u!1001 &2060340068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75973,7 +76085,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2150712642738146909, guid: 07899bbb5e299ce4ea6e0dae0969d711, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1146533337}
   m_SourcePrefab: {fileID: 100100000, guid: 07899bbb5e299ce4ea6e0dae0969d711, type: 3}
 --- !u!4 &2061369438 stripped
 Transform:
@@ -76582,6 +76697,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3328081855280249327, guid: 6e271eed7ca15174ebd67508177076bc, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3581488813526835041, guid: 6e271eed7ca15174ebd67508177076bc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.46
@@ -76629,7 +76748,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5951978137330740390, guid: 6e271eed7ca15174ebd67508177076bc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1791584656}
   m_SourcePrefab: {fileID: 100100000, guid: 6e271eed7ca15174ebd67508177076bc, type: 3}
 --- !u!4 &3167125233686686230
 Transform:
@@ -81868,7 +81990,10 @@ PrefabInstance:
       objectReference: {fileID: 2079826657}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 488931489834980210, guid: 0fd8905f53e0c5240a3ea1f599ee80a2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 723775633}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fd8905f53e0c5240a3ea1f599ee80a2, type: 3}
 --- !u!1001 &6223656673463970662

@@ -6,8 +6,9 @@ public class AstraCharm : BaseClass
     {
         if (player != null)
         {
-            player.MaxHealth = 3; // ⚠️ แก้จาก player.Health
-            Debug.Log("🏹 [AstraCharm] Stats Applied - HP:100, Power:20");
+            player.MaxHealth = 3;
+            player.Health = player.MaxHealth; // ⭐ เพิ่มบรรทัดนี้
+            Debug.Log($"🏹 [AstraCharm] Stats Applied - HP:{player.Health}/{player.MaxHealth}");
         }
     }
 

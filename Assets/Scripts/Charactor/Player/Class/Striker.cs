@@ -8,7 +8,6 @@ public class Striker : BaseClass
     public override void Initialize(Player ownerPlayer, Transform weaponTransform)
     {
         base.Initialize(ownerPlayer, weaponTransform);
-
         if (weaponInstance != null)
         {
             swordComponent = weaponInstance.GetComponent<Sword>();
@@ -27,8 +26,9 @@ public class Striker : BaseClass
     {
         if (player != null)
         {
-            player.MaxHealth = 5; // ⚠️ แก้จาก player.Health
-            Debug.Log("⚔️ [Striker] Stats Applied - HP:150, Power:25");
+            player.MaxHealth = 5;
+            player.Health = player.MaxHealth; // ⭐ เพิ่มบรรทัดนี้
+            Debug.Log($"⚔️ [Striker] Stats Applied - HP:{player.Health}/{player.MaxHealth}");
         }
     }
 
