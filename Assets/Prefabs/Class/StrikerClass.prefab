@@ -45,4 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Striker
   weaponPrefab: {fileID: 8522073730604442419, guid: 5b2a0ecff663a664eaa079dff6ccf0f9, type: 3}
+  weaponInfo: {fileID: 11400000, guid: 6ef37ea29215c3c4ab966813c327f519, type: 2}
   critChance: 0.15

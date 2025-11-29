@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Book
   weaponInfo: {fileID: 11400000, guid: 799b0ce66d9073c4e9ead8b39ac2c7ed, type: 2}
-  magicLaser: {fileID: 3518778156360054754, guid: 0914b713caf765b4082139804e089898, type: 3}
+  magicLaser: {fileID: 526371252741846322, guid: 4356d05463e44d04caf387e86cd72810, type: 3}
   magicLaserSpawnPoint: {fileID: 6916784803007161166}
 --- !u!1 &7538696342730295944
 GameObject:

@@ -8,7 +8,7 @@ public enum ClassType
     AstraCharm
 }
 
-public class AstraShard : Item
+public class AstraShard : ItemInteract
 {
     [Header("Astra Shard Settings")]
     [SerializeField] private bool isActivated = false;
@@ -37,12 +37,12 @@ public class AstraShard : Item
         }
     }
 
-    public bool CanInteract()
+    public override bool CanInteract()
     {
         return !isActivated;
     }
 
-    public void OnPlayerEnter()
+    public override void OnPlayerEnter()
     {
         if (!isActivated)
         {
@@ -50,12 +50,12 @@ public class AstraShard : Item
         }
     }
 
-    public void OnPlayerExit()
+    public override void OnPlayerExit()
     {
         Debug.Log("💎 [AstraShard] ห่างจาก Astra Shard");
     }
 
-    public void OnInteractStart()
+    public override void OnInteractStart()
     {
         if (isActivated) return;
 
@@ -66,8 +66,9 @@ public class AstraShard : Item
         }
     }
 
-    public void OnInteractEnd() { }
-    public void OnInteractHold(float deltaTime) { }
+    public override void OnInteractEnd() { }
+
+    public override void OnInteractHold(float deltaTime) { }
 
     public override void OnPickup(Player player)
     {

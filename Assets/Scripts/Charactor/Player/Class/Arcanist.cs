@@ -9,13 +9,8 @@ public class Arcanist : BaseClass
     {
         if (player != null)
         {
-            player.Health = 80;
-            player.AttackPower = 40f;
-            player.AttackSpeed = 0.8f;
-            player.AttackRange = 6f;
+            player.MaxHealth = 3; // ⚠️ แก้จาก player.Health
             player.Mana = 150;
-
-            Debug.Log("🔮 [Arcanist] Stats Applied - HP:80, Power:40, Mana:150");
         }
     }
 
@@ -35,7 +30,6 @@ public class Arcanist : BaseClass
         {
             player.Mana -= 10;
             Debug.Log($"✨ [Arcanist] Cast Spell! Mana: {player.Mana}");
-            // ยิงเวทย์
         }
         else
         {

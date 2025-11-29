@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 4109076579432194916}
   - component: {fileID: 965011331830705031}
   - component: {fileID: 1011156003854843489}
-  - component: {fileID: 8571854992842842667}
   - component: {fileID: 2780523691262194517}
-  - component: {fileID: 1142302939817620944}
+  - component: {fileID: 5008989994632272502}
   - component: {fileID: 1552694714522656849}
   - component: {fileID: 3206593636174437161}
+  - component: {fileID: 5860193913704962102}
   m_Layer: 0
   m_Name: Water Slime
   m_TagString: Untagged
@@ -173,7 +173,7 @@ Animator:
   m_GameObject: {fileID: 2150712642738146909}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0b198dc2a3d721543b80ce33465a2866, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -185,18 +185,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8571854992842842667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2150712642738146909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9307bd24b451f684a922850a41525e61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
 --- !u!114 &2780523691262194517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPathfinding
   moveSpeed: 2
---- !u!114 &1142302939817620944
+--- !u!114 &5008989994632272502
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,10 +207,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2150712642738146909}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6062fa8e099237646a725c521df09584, type: 3}
+  m_Script: {fileID: 11500000, guid: 23dd3c543a28fa24bae57913b5aefe2b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
   startingHealth: 3
+  deathVFXPrefab: {fileID: 5279154080319479446, guid: 9e4406aa92ddb2540859e0a5bfb0cce4, type: 3}
+  knockBackThrust: 15
+  roamChangeDirFloat: 2
 --- !u!114 &1552694714522656849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,6 +241,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Flash
   whiteFlashMat: {fileID: 2100000, guid: 67b8f68d83437624e811dfaa85353b87, type: 2}
   restoreDefaultMatTime: 0.2
+--- !u!114 &5860193913704962102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2150712642738146909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6d0da7e272f58148b4622da3993747d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomIdleAnimation
 --- !u!1 &6859305544902021541
 GameObject:
   m_ObjectHideFlags: 0

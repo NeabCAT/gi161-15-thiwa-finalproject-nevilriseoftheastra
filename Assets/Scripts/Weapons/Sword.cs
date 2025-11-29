@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Sword : MonoBehaviour, IWeapon
@@ -6,9 +8,7 @@ public class Sword : MonoBehaviour, IWeapon
     [SerializeField] private GameObject slashAnimPrefab;
     [SerializeField] private string slashAnimSpawnPointName = "SlashAnimationSpawnPoints";
     [SerializeField] private string weaponColliderName = "WeaponCollider";
-
-    // ⭐ ไม่ต้องมี [SerializeField] เพราะจะถูกส่งมาจาก ActiveWeapons
-    private WeaponInfo weaponInfo;
+    [SerializeField] private WeaponInfo weaponInfo;
 
     private Transform slashAnimSpawnPoint;
     private Transform weaponCollider;
@@ -62,25 +62,20 @@ public class Sword : MonoBehaviour, IWeapon
         playerController = GetComponentInParent<PlayerController>();
         activeWeapon = GetComponentInParent<ActiveWeapons>();
         myAnimator = GetComponent<Animator>();
+
+        if (weaponInfo != null)
+        {
+            Debug.Log($"✅ [Sword] มี WeaponInfo | Damage: {weaponInfo.weaponDamage}, Cooldown: {weaponInfo.weaponCooldown}s");
+        }
+        else
+        {
+            Debug.LogError("❌ [Sword] ไม่มี WeaponInfo! กรุณา assign ใน Inspector");
+        }
     }
 
     private void Update()
     {
         MouseFollowWithOffset();
-    }
-
-    // ⭐ ฟังก์ชันใหม่: ให้ ActiveWeapons เรียกเพื่อส่ง WeaponInfo มาให้
-    public void SetWeaponInfo(WeaponInfo info)
-    {
-        weaponInfo = info;
-        if (weaponInfo != null)
-        {
-            Debug.Log($"✅ [Sword] ได้รับ WeaponInfo | Cooldown: {weaponInfo.weaponCooldown}s");
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ [Sword] ไม่มี WeaponInfo!");
-        }
     }
 
     public WeaponInfo GetWeaponInfo()
@@ -107,10 +102,28 @@ public class Sword : MonoBehaviour, IWeapon
             slashAnim = Instantiate(slashAnimPrefab, slashAnimSpawnPoint.position, Quaternion.identity);
             slashAnim.transform.parent = this.transform.parent;
         }
+
+        // ⭐ เพิ่ม Fallback: ถ้า Animation Event ไม่ทำงาน จะปิด Collider เองหลัง 0.5 วินาที
+        StartCoroutine(AttackFallback());
+    }
+
+    // ⭐ Coroutine สำรอง
+    private IEnumerator AttackFallback()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        // ถ้า Collider ยังเปิดอยู่ ให้ปิดเอง
+        if (weaponCollider != null && weaponCollider.gameObject.activeSelf)
+        {
+            Debug.LogWarning("⚠️ [Sword] Animation Event ไม่ทำงาน! ปิด Collider ด้วย Fallback");
+            weaponCollider.gameObject.SetActive(false);
+        }
     }
 
     public void DoneAttackingAnimEvent()
     {
+        Debug.Log("✅ [Sword] DoneAttackingAnimEvent เรียกแล้ว!");
+
         if (weaponCollider != null)
         {
             weaponCollider.gameObject.SetActive(false);

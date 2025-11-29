@@ -13,7 +13,10 @@ public class RandomIdleAnimation : MonoBehaviour
 
     private void Start()
     {
-        // รอ 1 frame ให้ Animator เริ่มทำงานก่อน
+        if (!myAnimator)
+        {
+            return;
+        }
         StartCoroutine(RandomizeAnimation());
     }
 

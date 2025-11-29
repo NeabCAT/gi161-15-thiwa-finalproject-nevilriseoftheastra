@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6472676374279834736}
   - component: {fileID: 7617944259885524491}
   - component: {fileID: 6384967932855600272}
+  - component: {fileID: 4603634191269415303}
   m_Layer: 0
   m_Name: Bush
   m_TagString: Untagged
@@ -142,3 +143,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Destructible
   destroyVFX: {fileID: 3521403203839302632, guid: ee86eec0f2f2ba14eb24aa4beee59637, type: 3}
+--- !u!114 &4603634191269415303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2940044953973650857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a5ce724dac348a449a0be0bf8f0f1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickUpSpawner
+  goldCoin: {fileID: 8431709808952348351, guid: a0c62d8dbc1dcbf4594fd4c4ffca2c55, type: 3}
+  healthGlobe: {fileID: 8431709808952348351, guid: 13cedf2ddd8d90e4b9e1a1e7f3d45a17, type: 3}
+  staminaGlobe: {fileID: 8431709808952348351, guid: 505fcbdd6b16e0e468f17ea67f6f6b4f, type: 3}

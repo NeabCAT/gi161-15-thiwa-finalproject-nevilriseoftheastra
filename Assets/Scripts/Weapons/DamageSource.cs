@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DamageSource : MonoBehaviour
 {
@@ -14,7 +12,7 @@ public class DamageSource : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        EnemyHealth enemyHealth = other.gameObject.GetComponent<EnemyHealth>();
-        enemyHealth?.TakeDamage(damageAmount);
+        Enemy enemy = other.gameObject.GetComponent<Enemy>();
+        enemy?.TakeDamage(damageAmount);
     }
 }

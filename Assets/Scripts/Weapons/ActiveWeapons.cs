@@ -40,7 +40,6 @@ public class ActiveWeapons : Singleton<ActiveWeapons>
         Attack();
     }
 
-    // ⭐ รับ WeaponInfo มาด้วยตอนเรียก SetWeapon
     public void NewWeapon(WeaponInfo weaponInfo)
     {
         if (weaponInfo == null || weaponInfo.weaponPrefab == null)
@@ -49,30 +48,18 @@ public class ActiveWeapons : Singleton<ActiveWeapons>
             return;
         }
 
-        // สร้าง weapon จาก prefab
         GameObject weaponObject = Instantiate(weaponInfo.weaponPrefab, transform.position, transform.rotation);
         weaponObject.transform.parent = transform;
 
-        // ตั้งค่าอาวุธ
-        SetWeaponInternal(weaponObject, weaponInfo);
+        SetWeaponInternal(weaponObject);
     }
 
-    // ⭐ ฟังก์ชันสำหรับโค้ดเก่าที่ส่ง GameObject มา (ไม่แนะนำ แต่รองรับเพื่อ backward compatibility)
     public void SetWeapon(GameObject weapon)
     {
-        // พยายามหา WeaponInfo จากอาวุธเอง
-        IWeapon weaponInterface = weapon.GetComponent<IWeapon>();
-        WeaponInfo info = weaponInterface?.GetWeaponInfo();
-
-        if (info == null)
-        {
-            Debug.LogWarning("⚠️ [ActiveWeapons] ไม่พบ WeaponInfo! จะใช้ค่า default cooldown = 0.5s");
-        }
-
-        SetWeaponInternal(weapon, info);
+        SetWeaponInternal(weapon);
     }
 
-    private void SetWeaponInternal(GameObject weapon, WeaponInfo weaponInfo)
+    private void SetWeaponInternal(GameObject weapon)
     {
         ClearWeapon();
         currentWeaponObject = weapon;
@@ -84,25 +71,15 @@ public class ActiveWeapons : Singleton<ActiveWeapons>
             return;
         }
 
-        // ⭐ ส่ง WeaponInfo ไปให้อาวุธ
+        // ⭐ ดึง WeaponInfo จากอาวุธโดยตรง
         IWeapon weaponInterface = currentActiveWeapon as IWeapon;
-
-        // ถ้าอาวุธมีฟังก์ชัน SetWeaponInfo ให้เรียกมัน
-        if (currentActiveWeapon is Sword sword)
-        {
-            sword.SetWeaponInfo(weaponInfo);
-        }
-        // สามารถเพิ่มอาวุธอื่นๆ ได้ เช่น
-        // else if (currentActiveWeapon is Bow bow)
-        // {
-        //     bow.SetWeaponInfo(weaponInfo);
-        // }
+        WeaponInfo info = weaponInterface.GetWeaponInfo();
 
         // ตั้งค่า cooldown
-        if (weaponInfo != null)
+        if (info != null)
         {
-            timeBetweenAttacks = weaponInfo.weaponCooldown;
-            Debug.Log($"⚔️ ติดอาวุธ: {weapon.name} | Cooldown: {timeBetweenAttacks}s");
+            timeBetweenAttacks = info.weaponCooldown;
+            Debug.Log($"⚔️ ติดอาวุธ: {weapon.name} | Damage: {info.weaponDamage}, Cooldown: {timeBetweenAttacks}s");
         }
         else
         {
@@ -165,7 +142,7 @@ public class ActiveWeapons : Singleton<ActiveWeapons>
 
     private void Attack()
     {
-        if (attackButtonDown && !isAttacking && currentActiveWeapon != null)
+        if (attackButtonDown && !isAttacking && currentActiveWeapon)
         {
             AttackCooldown();
             (currentActiveWeapon as IWeapon).Attack();
