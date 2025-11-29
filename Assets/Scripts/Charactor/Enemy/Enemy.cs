@@ -16,13 +16,13 @@ public class Enemy : Character
     [SerializeField] private bool stopMovingWhileAttacking = false;
 
     [Header("Death Animation")]
-    [SerializeField] private float deathAnimationDuration = 1f; // ⭐ เพิ่ม: ความยาว Animation
+    [SerializeField] private float deathAnimationDuration = 1f;
 
     private Knockback knockback;
     private Flash flash;
     private EnemyPathfinding enemyPathfinding;
-    private Animator animator; // ⭐ เพิ่ม: Animator
-    private bool isDead = false; // ⭐ เพิ่ม: ป้องกันตายซ้ำ
+    private Animator animator;
+    private bool isDead = false;
 
     private bool canAttack = true;
     private Vector2 roamPosition;
@@ -42,7 +42,7 @@ public class Enemy : Character
         flash = GetComponent<Flash>();
         knockback = GetComponent<Knockback>();
         enemyPathfinding = GetComponent<EnemyPathfinding>();
-        animator = GetComponent<Animator>(); // ⭐ เพิ่ม: หา Animator
+        animator = GetComponent<Animator>();
 
         MaxHealth = startingHealth;
         state = State.Roaming;
@@ -55,7 +55,7 @@ public class Enemy : Character
 
     private void Update()
     {
-        if (!isDead) // ⭐ เพิ่ม: ไม่ให้เคลื่อนที่ตอนตายแล้ว
+        if (!isDead)
         {
             MovementStateControl();
         }
@@ -83,14 +83,12 @@ public class Enemy : Character
             enemyPathfinding.MoveTo(roamPosition);
         }
 
-        // เช็คว่า Player อยู่ในระยะโจมตีหรือไม่
         if (PlayerController.Instance != null &&
             Vector2.Distance(transform.position, PlayerController.Instance.transform.position) < attackRange)
         {
             state = State.Attacking;
         }
 
-        // เปลี่ยนทิศทาง Roaming
         if (timeRoaming > roamChangeDirFloat)
         {
             roamPosition = GetRoamingPosition();
@@ -99,7 +97,6 @@ public class Enemy : Character
 
     private void Attacking()
     {
-        // ถ้า Player ออกจากระยะโจมตี → กลับไป Roaming
         if (PlayerController.Instance != null &&
             Vector2.Distance(transform.position, PlayerController.Instance.transform.position) > attackRange)
         {
@@ -107,18 +104,15 @@ public class Enemy : Character
             return;
         }
 
-        // โจมตี Player
         if (attackRange != 0 && canAttack)
         {
             canAttack = false;
 
-            // เรียก Attack() จาก enemyType (เช่น Shooter, Melee)
             if (enemyType != null)
             {
                 (enemyType as IEnemy)?.Attack();
             }
 
-            // ควบคุมการเคลื่อนที่ขณะโจมตี
             if (stopMovingWhileAttacking)
             {
                 enemyPathfinding?.StopMoving();
@@ -146,7 +140,7 @@ public class Enemy : Character
 
     public override void TakeDamage(int damage)
     {
-        if (isDead) return; // ⭐ เพิ่ม: ไม่รับดาเมจตอนตายแล้ว
+        if (isDead) return;
 
         base.TakeDamage(damage);
 
@@ -178,30 +172,32 @@ public class Enemy : Character
 
     public override void IsDead()
     {
-        if (isDead) return; // ⭐ ป้องกันเรียกซ้ำ
+        if (isDead) return;
         isDead = true;
 
         Debug.Log($"💀 [{gameObject.name}] ตาย!");
 
-        // ⭐ ปิดการเคลื่อนที่
+        // ปิดการเคลื่อนที่
         if (enemyPathfinding != null)
         {
             enemyPathfinding.StopMoving();
             enemyPathfinding.enabled = false;
         }
 
-        // ⭐ ปิด Collider
+        // ปิด Collider
         Collider2D col = GetComponent<Collider2D>();
         if (col != null)
         {
             col.enabled = false;
         }
 
-        // ⭐ เล่น Death Animation
+        // เล่น Death Animation
         StartCoroutine(DeathAnimationRoutine());
+
+        // ⭐ บังคับ Destroy (สำรอง) - จะ Destroy หลัง Animation จบแน่นอน
+        Destroy(gameObject, deathAnimationDuration + 0.5f);
     }
 
-    // ⭐ เพิ่ม: Coroutine สำหรับ Death Animation
     private IEnumerator DeathAnimationRoutine()
     {
         // เล่น Death Animation
@@ -212,7 +208,7 @@ public class Enemy : Character
         }
         else
         {
-            // Fallback: ใช้ Code Animation ถ้าไม่มี Animator
+            // Fallback: Code Animation
             float elapsed = 0f;
             Vector3 startScale = transform.localScale;
             SpriteRenderer sprite = GetComponent<SpriteRenderer>();
@@ -223,11 +219,9 @@ public class Enemy : Character
                 elapsed += Time.deltaTime;
                 float t = elapsed / deathAnimationDuration;
 
-                // ย่อขนาด + หมุน
                 transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t);
                 transform.Rotate(0, 0, 360f * Time.deltaTime);
 
-                // จางหาย
                 if (sprite != null)
                 {
                     Color newColor = startColor;
@@ -239,20 +233,20 @@ public class Enemy : Character
             }
         }
 
-        // ⭐ Spawn VFX
+        // Spawn VFX
         if (deathVFXPrefab != null)
         {
             Instantiate(deathVFXPrefab, transform.position, Quaternion.identity);
         }
 
-        // ⭐ Drop Items
+        // Drop Items
         PickUpSpawner pickUpSpawner = GetComponent<PickUpSpawner>();
         if (pickUpSpawner != null)
         {
             pickUpSpawner.DropItems();
         }
 
-        // ⭐ ทำลาย GameObject
+        // ⭐ สำคัญ! ทำลาย GameObject ทันที
         Destroy(gameObject);
     }
 }

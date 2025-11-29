@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 1879803824088032102}
   - component: {fileID: 1381731744093012274}
   - component: {fileID: 2876196758714064483}
+  - component: {fileID: 4046103584189653502}
   m_Layer: 0
   m_Name: Shoot Slime
   m_TagString: Untagged
@@ -212,14 +213,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23dd3c543a28fa24bae57913b5aefe2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  maxHealth: 2
   startingHealth: 3
   deathVFXPrefab: {fileID: 5279154080319479446, guid: 9e4406aa92ddb2540859e0a5bfb0cce4, type: 3}
   knockBackThrust: 15
   roamChangeDirFloat: 2
-  attackRange: 5
+  attackRange: 10
   enemyType: {fileID: 2876196758714064483}
   attackCooldown: 2
   stopMovingWhileAttacking: 0
+  deathAnimationDuration: 1
 --- !u!114 &7273211893733281167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,6 +287,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shooter
   bulletPrefab: {fileID: 8160982059550487207, guid: 3f11fea5b092485448c41552d2882fd4, type: 3}
+  bulletMoveSpeed: 3
+  burstCount: 5
+  projectilesPerBurst: 2
+  angleSpread: 100
+  startingDistance: 0.1
+  timeBetweenBursts: 0.3
+  restTime: 1.2
+  stagger: 1
+  oscillate: 1
+--- !u!114 &4046103584189653502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864274303106416892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a5ce724dac348a449a0be0bf8f0f1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickUpSpawner
+  goldCoin: {fileID: 0}
+  healthGlobe: {fileID: 8431709808952348351, guid: 13cedf2ddd8d90e4b9e1a1e7f3d45a17, type: 3}
+  staminaGlobe: {fileID: 0}
 --- !u!1 &3519660558812455296
 GameObject:
   m_ObjectHideFlags: 0
