@@ -23,6 +23,9 @@ public class Player : Character
     [SerializeField] private GameObject arcanistPrefab;
     [SerializeField] private GameObject astraCharmPrefab;
 
+    [Header("Dead UI")]
+    [SerializeField] private PlayerDeadUI playerDeadUI; // ⭐ เพิ่มนี้
+
     private BaseClass currentClassInstance;
     private int maxMana;
     private PlayerController playerController;
@@ -181,7 +184,7 @@ public class Player : Character
             col.enabled = false;
         }
 
-        // เล่น Death Animation
+        // เล่น Death Animation แล้วแสดง UI
         StartCoroutine(DeathAnimationRoutine());
     }
 
@@ -224,7 +227,20 @@ public class Player : Character
         }
 
         Debug.Log("🎬 Death Animation จบแล้ว");
-        gameObject.SetActive(false);
+
+        // ⭐ แสดง Dead UI
+        if (playerDeadUI != null)
+        {
+            playerDeadUI.ShowDeadUI();
+            Debug.Log("✅ เรียก Dead UI สำเร็จ");
+        }
+        else
+        {
+            Debug.LogError("❌ Player Dead UI เป็น NULL! ลืมลาก Reference?");
+        }
+
+        // ⭐ ไม่ต้อง SetActive(false) เพราะจะโชว์ UI
+        // gameObject.SetActive(false);
     }
 
     public void HealPlayer(int amount = 1)
