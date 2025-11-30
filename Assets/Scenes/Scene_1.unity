@@ -2085,7 +2085,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 852034587}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &863478987 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1594484147946998352, guid: c08628d0c63e9934594c3ae9543a077d, type: 3}
@@ -76698,6 +76710,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5951978137330740390, guid: 6e271eed7ca15174ebd67508177076bc, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -81700,7 +81716,7 @@ GameObject:
   - component: {fileID: 4269475499044186698}
   m_Layer: 0
   m_Name: AreaExit
-  m_TagString: Untagged
+  m_TagString: ExitDoor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81794,6 +81810,10 @@ MonoBehaviour:
   sceneToLoad: Scene_2
   sceneTransitionName: West_Entrance
   isLocked: 1
+  doorSprite: {fileID: 0}
+  lockedColor: {r: 1, g: 0, b: 0, a: 1}
+  unlockedColor: {r: 0, g: 1, b: 0, a: 1}
+  lockIcon: {fileID: 0}
 --- !u!199 &4330531775479987816
 ParticleSystemRenderer:
   serializedVersion: 6

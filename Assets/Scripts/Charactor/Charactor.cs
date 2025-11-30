@@ -21,13 +21,13 @@ public class Character : MonoBehaviour
         set
         {
             maxHealth = value;
-            health = Mathf.Min(health, maxHealth); // ⭐ ปรับ health ถ้าเกิน maxHealth ใหม่
+            health = Mathf.Min(health, maxHealth); 
         }
     }
 
     protected virtual void Awake()
     {
-        health = maxHealth; // ⭐ เพิ่มบรรทัดนี้ให้ health เริ่มต้นเท่ากับ maxHealth
+        health = maxHealth;
     }
 
     public virtual void TakeDamage(int damage)

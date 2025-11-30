@@ -13,33 +13,24 @@ public abstract class BaseClass : MonoBehaviour
     {
         player = ownerPlayer;
 
-        // หา ActiveWeapons component
         activeWeaponsHolder = weaponTransform.GetComponent<ActiveWeapons>();
 
         if (activeWeaponsHolder == null)
         {
-            Debug.LogError("❌ [BaseClass] ไม่พบ ActiveWeapons component!");
             return;
         }
 
-        // ลบอาวุธเก่า
         activeWeaponsHolder.ClearWeapon();
 
-        // สร้างอาวุธใหม่
         if (weaponPrefab != null)
         {
             weaponInstance = Instantiate(weaponPrefab, activeWeaponsHolder.transform);
             weaponInstance.transform.localPosition = Vector3.zero;
             weaponInstance.transform.localRotation = Quaternion.identity;
 
-            // บอก ActiveWeapons ว่าอาวุธคืออะไร
             activeWeaponsHolder.SetWeapon(weaponInstance);
 
             Debug.Log($"✅ [BaseClass] สร้างอาวุธ: {weaponPrefab.name}");
-        }
-        else
-        {
-            Debug.LogError("❌ [BaseClass] ไม่มี Weapon Prefab ใน Inspector!");
         }
 
         ApplyClassStats();

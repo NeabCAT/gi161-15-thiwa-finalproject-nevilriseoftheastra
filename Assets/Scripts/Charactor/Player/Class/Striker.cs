@@ -27,7 +27,7 @@ public class Striker : BaseClass
         if (player != null)
         {
             player.MaxHealth = 5;
-            player.Health = player.MaxHealth; // ⭐ เพิ่มบรรทัดนี้
+            player.Health = player.MaxHealth; 
             Debug.Log($"⚔️ [Striker] Stats Applied - HP:{player.Health}/{player.MaxHealth}");
         }
     }

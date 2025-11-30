@@ -212,6 +212,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   exitDoor: {fileID: 1236864058}
   lockDoorAtStart: 1
+  autoFindDoor: 1
+  doorTag: ExitDoor
 --- !u!4 &53003317
 Transform:
   m_ObjectHideFlags: 0
@@ -6252,6 +6254,85 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 109353203770045261, guid: 931a8e23b728c6a4e96ef623ec86ea9a, type: 3}
   m_PrefabInstance: {fileID: 811680023}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &824957123
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 824957126}
+  - component: {fileID: 824957125}
+  - component: {fileID: 824957124}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &824957124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824957123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
+--- !u!114 &824957125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824957123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventSystem
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &824957126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824957123}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &847083188
 GameObject:
   m_ObjectHideFlags: 0
@@ -23800,7 +23881,7 @@ GameObject:
   - component: {fileID: 1236864058}
   m_Layer: 0
   m_Name: AreaExit (1)
-  m_TagString: Untagged
+  m_TagString: ExitDoor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23820,6 +23901,10 @@ MonoBehaviour:
   sceneToLoad: Scene_3
   sceneTransitionName: West_Entrance
   isLocked: 1
+  doorSprite: {fileID: 0}
+  lockedColor: {r: 1, g: 0, b: 0, a: 1}
+  unlockedColor: {r: 0, g: 1, b: 0, a: 1}
+  lockIcon: {fileID: 0}
 --- !u!61 &1236864059
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -90159,6 +90244,10 @@ MonoBehaviour:
   sceneToLoad: Scene_1
   sceneTransitionName: East_Entrance
   isLocked: 1
+  doorSprite: {fileID: 0}
+  lockedColor: {r: 1, g: 0, b: 0, a: 1}
+  unlockedColor: {r: 0, g: 1, b: 0, a: 1}
+  lockIcon: {fileID: 0}
 --- !u!1 &6375839531709573140
 GameObject:
   m_ObjectHideFlags: 0
@@ -90290,3 +90379,4 @@ SceneRoots:
   - {fileID: 1695377606}
   - {fileID: 1722051266}
   - {fileID: 53003317}
+  - {fileID: 824957126}

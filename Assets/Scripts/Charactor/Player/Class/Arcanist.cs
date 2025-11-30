@@ -10,9 +10,9 @@ public class Arcanist : BaseClass
         if (player != null)
         {
             player.MaxHealth = 3;
-            player.Health = player.MaxHealth; // ⭐ เพิ่มบรรทัดนี้
+            player.Health = player.MaxHealth; 
             player.Mana = 150;
-            Debug.Log($"✨ [Arcanist] Stats Applied - HP:{player.Health}/{player.MaxHealth}, Mana:{player.Mana}");
+            Debug.Log($"[Arcanist] Stats Applied - HP:{player.Health}/{player.MaxHealth}, Mana:{player.Mana}");
         }
     }
 
@@ -31,11 +31,7 @@ public class Arcanist : BaseClass
         if (player.Mana >= 10)
         {
             player.Mana -= 10;
-            Debug.Log($"✨ [Arcanist] Cast Spell! Mana: {player.Mana}");
-        }
-        else
-        {
-            Debug.Log("⚠️ [Arcanist] ไม่พอ Mana!");
+            Debug.Log($"[Arcanist] Cast Spell! Mana: {player.Mana}");
         }
     }
 
@@ -44,7 +40,7 @@ public class Arcanist : BaseClass
         if (player.Mana >= 30)
         {
             player.Mana -= 30;
-            Debug.Log("💫 [Arcanist] Arcane Blast - ระเบิดพลังเวทย์!");
+            Debug.Log("[Arcanist] Arcane Blast - ระเบิดพลังเวทย์!");
         }
     }
 }

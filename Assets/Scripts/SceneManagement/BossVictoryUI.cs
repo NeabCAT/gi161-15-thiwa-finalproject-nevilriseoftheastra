@@ -1,11 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// UI �ʴ�����ͪ�к��
+/// UI แสดงเมื่อชนะบอส
 /// </summary>
 public class BossVictoryUI : MonoBehaviour
 {
@@ -28,13 +28,13 @@ public class BossVictoryUI : MonoBehaviour
 
     private void Awake()
     {
-        // ��͹ UI �͹�������
+        // ซ่อน UI ตอนเริ่มเกม
         if (victoryPanel != null)
         {
             victoryPanel.SetActive(false);
         }
 
-        // Setup CanvasGroup ����Ѻ Fade
+        // Setup CanvasGroup สำหรับ Fade
         canvasGroup = victoryPanel.GetComponent<CanvasGroup>();
         if (canvasGroup == null)
         {
@@ -61,15 +61,15 @@ public class BossVictoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ���¡�ѧ��ѹ�������ͺ�ʵ��
+    /// เรียกฟังก์ชันนี้เมื่อบอสตาย
     /// </summary>
     public void ShowVictory(string bossName = "Boss")
     {
-        Debug.Log($"?? ShowVictory �١���¡! Boss: {bossName}");
+        Debug.Log($"🎉 ShowVictory ถูกเรียก! Boss: {bossName}");
 
         if (victoryPanel == null)
         {
-            Debug.LogError("? Victory Panel �� NULL! ����ҡ Reference?");
+            Debug.LogError("❌ Victory Panel เป็น NULL! ลืมลาก Reference?");
             return;
         }
 
@@ -78,30 +78,30 @@ public class BossVictoryUI : MonoBehaviour
 
     private IEnumerator ShowVictoryRoutine(string bossName)
     {
-        Debug.Log("? ShowVictoryRoutine �������");
+        Debug.Log("⏳ ShowVictoryRoutine เริ่มต้น");
 
-        // ˹�ǧ������硹���
+        // หน่วงเวลาเล็กน้อย
         yield return new WaitForSeconds(0.5f);
 
-        // �ʴ� Panel
+        // แสดง Panel
         if (victoryPanel != null)
         {
             victoryPanel.SetActive(true);
-            Debug.Log("? Victory Panel �Դ����");
+            Debug.Log("✅ Victory Panel เปิดแล้ว");
         }
         else
         {
-            Debug.LogError("? Victory Panel �� NULL!");
+            Debug.LogError("❌ Victory Panel เป็น NULL!");
             yield break;
         }
 
-        // ������§
+        // เล่นเสียง
         if (victorySound != null && audioSource != null)
         {
             audioSource.PlayOneShot(victorySound);
         }
 
-        // Freeze �� (��ҵ�ͧ���)
+        // Freeze เกม
         Time.timeScale = 0f;
 
         // Fade In
@@ -114,7 +114,7 @@ public class BossVictoryUI : MonoBehaviour
         }
         canvasGroup.alpha = 1f;
 
-        // �ʴ���ͤ���
+        // แสดงข้อความ
         yield return new WaitForSecondsRealtime(textAnimationDelay);
 
         if (bossNameText != null)
@@ -130,7 +130,7 @@ public class BossVictoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Animate Text Ẻ���е���ѡ��
+    /// Animate Text แบบทีละตัวอักษร
     /// </summary>
     private IEnumerator AnimateText(TextMeshProUGUI textComponent, float delay = 0f)
     {
@@ -147,34 +147,84 @@ public class BossVictoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ���� Restart
+    /// ปุ่ม Restart - โหลดซีนที่ 1
     /// </summary>
     private void OnRestartClicked()
     {
+        Debug.Log("🔄 Restart to Scene 1!");
+
+        // รีเซ็ต Time.timeScale
         Time.timeScale = 1f;
 
-        Debug.Log("Restart Level!");
+        // ⭐ ปิด UI ก่อน
+        HideVictory();
 
-        // Restart Scene �Ѩ�غѹ
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // ⭐ ล้าง Class และอาวุธก่อนโหลดซีน
+        if (Player.Instance != null)
+        {
+            Player.Instance.ResetPlayer();
+        }
+
+        // ⭐ โหลดซีนใหม่และรอให้โหลดเสร็จ
+        StartCoroutine(RestartSceneRoutine());
+    }
+
+    private IEnumerator RestartSceneRoutine()
+    {
+        // โหลดซีนที่ 1
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scene_1");
+
+        // รอให้โหลดเสร็จ
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        // รอ 1 frame ให้ทุกอย่างพร้อม
+        yield return new WaitForEndOfFrame();
+
+        // ⭐ Reset กล้องหลังซีนโหลดเสร็จ
+        if (CameraController.Instance != null)
+        {
+            CameraController.Instance.RefreshCamera();
+        }
+
+        // ⭐ Reset EnemyManager (ถ้ามี)
+        EnemyManager enemyManager = FindObjectOfType<EnemyManager>();
+        if (enemyManager != null)
+        {
+            enemyManager.ManualReset();
+            Debug.Log("✅ Reset EnemyManager");
+        }
+
+        Debug.Log("✅ Restart สำเร็จ!");
     }
 
     /// <summary>
-    /// ���� Main Menu
+    /// ปุ่ม Main Menu - กลับไปหน้าเมนู
     /// </summary>
     private void OnMainMenuClicked()
     {
+        Debug.Log("🏠 Return to Main Menu");
+
+        // รีเซ็ต Time.timeScale
         Time.timeScale = 1f;
 
-        Debug.Log("Return to Main Menu");
+        // ⭐ ปิด UI ก่อน
+        HideVictory();
 
-        // ��Ŵ Scene Main Menu (����¹���͵���ͧ�س)
+        // ⭐ รีเซ็ต Player (ถ้ามี)
+        if (Player.Instance != null)
+        {
+            Player.Instance.ResetPlayer();
+        }
+
+        // กลับไปหน้าเมนู
         SceneManager.LoadScene("MainMenu");
-        // ������ index: SceneManager.LoadScene(0);
     }
 
     /// <summary>
-    /// ��͹ Victory UI
+    /// ซ่อน Victory UI
     /// </summary>
     public void HideVictory()
     {

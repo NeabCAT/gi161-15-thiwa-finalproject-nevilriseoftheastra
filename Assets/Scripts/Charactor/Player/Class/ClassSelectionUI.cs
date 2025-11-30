@@ -18,11 +18,6 @@ public class ClassSelectionUI : MonoBehaviour
     [SerializeField] private Button arcanistButton;
     [SerializeField] private Button astraCharmButton;
 
-    [Header("Class Info")]
-    [SerializeField] private TextMeshProUGUI strikerInfo;
-    [SerializeField] private TextMeshProUGUI arcanistInfo;
-    [SerializeField] private TextMeshProUGUI astraCharmInfo;
-
     private AstraShard currentShard;
     private int dialogueIndex = 0;
     private string[] dialogues =
@@ -42,9 +37,6 @@ public class ClassSelectionUI : MonoBehaviour
         arcanistButton.onClick.AddListener(() => OnClassSelected(ClassType.Arcanist));
         astraCharmButton.onClick.AddListener(() => OnClassSelected(ClassType.AstraCharm));
 
-        strikerInfo.text = "⚔️ Striker\nนักรบกล้า\nHP: 150 | DMG: 25";
-        arcanistInfo.text = "🔮 Arcanist\nจอมเวทย์\nHP: 80 | DMG: 40";
-        astraCharmInfo.text = "🏹 Astra Charm\nนักธนู\nHP: 100 | DMG: 20";
     }
 
     public void ShowSelection(AstraShard shard, ClassType[] availableClasses)

@@ -24,7 +24,7 @@ public class Player : Character
     [SerializeField] private GameObject astraCharmPrefab;
 
     [Header("Dead UI")]
-    [SerializeField] private PlayerDeadUI playerDeadUI; // ⭐ เพิ่มนี้
+    [SerializeField] private PlayerDeadUI playerDeadUI;
 
     private BaseClass currentClassInstance;
     private int maxMana;
@@ -36,8 +36,16 @@ public class Player : Character
     private Animator animator;
     private bool isDead = false;
 
+    // ⭐ เก็บตำแหน่งเริ่มต้น
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+
     private void Start()
     {
+        // ⭐ บันทึกตำแหน่งเริ่มต้น
+        startPosition = transform.position;
+        startRotation = transform.rotation;
+
         UpdateHealthSlider();
     }
 
@@ -184,23 +192,24 @@ public class Player : Character
             col.enabled = false;
         }
 
+        // ⭐ อย่าปิดกล้อง - ให้มันตามตัวละครต่อ
+        // ไม่ต้อง disable CameraController
+
         // เล่น Death Animation แล้วแสดง UI
         StartCoroutine(DeathAnimationRoutine());
     }
 
     private IEnumerator DeathAnimationRoutine()
     {
-        // ⭐ ใช้ Animator Trigger
+        // เล่น Death Animation
         if (animator != null)
         {
             animator.SetTrigger("Die");
-
-            // รอให้ Animation เล่นจบ
             yield return new WaitForSeconds(1f);
         }
         else
         {
-            // Fallback: ใช้ Code Animation
+            // Fallback: Code Animation
             float duration = 1f;
             float elapsed = 0f;
             Vector3 startScale = transform.localScale;
@@ -228,7 +237,7 @@ public class Player : Character
 
         Debug.Log("🎬 Death Animation จบแล้ว");
 
-        // ⭐ แสดง Dead UI
+        // แสดง Dead UI
         if (playerDeadUI != null)
         {
             playerDeadUI.ShowDeadUI();
@@ -238,9 +247,78 @@ public class Player : Character
         {
             Debug.LogError("❌ Player Dead UI เป็น NULL! ลืมลาก Reference?");
         }
+    }
 
-        // ⭐ ไม่ต้อง SetActive(false) เพราะจะโชว์ UI
-        // gameObject.SetActive(false);
+    /// <summary>
+    /// ฟังก์ชัน Reset Player (ใช้ถ้ามี DontDestroyOnLoad)
+    /// </summary>
+    public void ResetPlayer()
+    {
+        Debug.Log("🔄 Reset Player!");
+
+        // รีเซ็ตสถานะ
+        isDead = false;
+        health = maxHealth;
+        canTakeDamage = true;
+
+        // ⭐ ล้าง Class และอาวุธทั้งหมด (สำคัญมาก!)
+        if (currentClassInstance != null)
+        {
+            Destroy(currentClassInstance.gameObject);
+            currentClassInstance = null;
+        }
+        selectedClass = ClassType.None;
+
+        // ⭐ กลับไปตำแหน่งเริ่มต้น (สำคัญมาก!)
+        transform.position = startPosition;
+        transform.rotation = startRotation;
+
+        // เปิด Components กลับ
+        if (playerController != null)
+        {
+            playerController.enabled = true;
+        }
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null)
+        {
+            col.enabled = true;
+        }
+
+        // ⭐ หยุด Rigidbody2D (ถ้ามี)
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+
+        // Reset Animation (สำคัญมาก!)
+        if (animator != null)
+        {
+            animator.ResetTrigger("Die"); // ยกเลิก Trigger Die
+            animator.Play("Idle", 0, 0f); // บังคับเล่น Idle state
+        }
+
+        // Reset Scale & Color
+        transform.localScale = Vector3.one;
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        if (sprite != null)
+        {
+            Color c = sprite.color;
+            c.a = 1f;
+            sprite.color = c;
+        }
+
+        // ⭐ Reset Cinemachine Camera
+        if (CameraController.Instance != null)
+        {
+            CameraController.Instance.SetPlayerCameraFollow();
+            Debug.Log("✅ Reset Cinemachine Camera");
+        }
+
+        UpdateHealthSlider();
+        Debug.Log($"✅ Player Reset เรียบร้อย! ตำแหน่ง: {transform.position}");
     }
 
     public void HealPlayer(int amount = 1)

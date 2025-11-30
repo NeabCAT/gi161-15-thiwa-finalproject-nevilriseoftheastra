@@ -135,34 +135,84 @@ public class PlayerDeadUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ปุ่ม Restart
+    /// ปุ่ม Restart - โหลดซีนใหม่
     /// </summary>
     private void OnRestartClicked()
     {
         Debug.Log("🔄 Restart Level!");
 
+        // รีเซ็ต Time.timeScale
         Time.timeScale = 1f;
 
-        // Restart Scene ปัจจุบัน
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // ⭐ ปิด UI ก่อน (สำคัญ!)
+        HideDeadUI();
+
+        // ⭐ ล้าง Class และอาวุธก่อนโหลดซีน
+        if (Player.Instance != null)
+        {
+            Player.Instance.ResetPlayer();
+        }
+
+        // ⭐ โหลดซีนใหม่และรอให้โหลดเสร็จ
+        StartCoroutine(RestartSceneRoutine());
+    }
+
+    private IEnumerator RestartSceneRoutine()
+    {
+        // โหลดซีน
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scene_1");
+
+        // รอให้โหลดเสร็จ
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        // รอ 1 frame ให้ทุกอย่างพร้อม
+        yield return new WaitForEndOfFrame();
+
+        // ⭐ Reset กล้องหลังซีนโหลดเสร็จ
+        if (CameraController.Instance != null)
+        {
+            CameraController.Instance.RefreshCamera();
+        }
+
+        // ⭐ Reset EnemyManager (ถ้ามี)
+        EnemyManager enemyManager = FindObjectOfType<EnemyManager>();
+        if (enemyManager != null)
+        {
+            enemyManager.ManualReset();
+            Debug.Log("✅ Reset EnemyManager");
+        }
+
+        Debug.Log("✅ Restart สำเร็จ!");
     }
 
     /// <summary>
-    /// ปุ่ม Main Menu
+    /// ปุ่ม Main Menu - กลับไปหน้าเมนู
     /// </summary>
     private void OnMainMenuClicked()
     {
         Debug.Log("🏠 Return to Main Menu");
 
+        // รีเซ็ต Time.timeScale
         Time.timeScale = 1f;
 
-        // โหลด Scene Main Menu (เปลี่ยนชื่อตามของคุณ)
+        // ⭐ ปิด UI ก่อน
+        HideDeadUI();
+
+        // ⭐ รีเซ็ต Player ก่อน
+        if (Player.Instance != null)
+        {
+            Player.Instance.ResetPlayer();
+        }
+
+        // กลับไปหน้าเมนู (เปลี่ยนชื่อตามซีนของคุณ)
         SceneManager.LoadScene("MainMenu");
-        // หรือใช้ index: SceneManager.LoadScene(0);
     }
 
     /// <summary>
-    /// ซ่อน Dead UI
+    /// ซ่อน Dead UI (ถ้าต้องการใช้)
     /// </summary>
     public void HideDeadUI()
     {

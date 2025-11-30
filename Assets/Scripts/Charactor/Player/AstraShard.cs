@@ -26,6 +26,8 @@ public class AstraShard : ItemInteract
     {
         itemType = "AstraShard";
         startPosition = transform.position;
+
+        ResetShard();
     }
 
     void Update()
@@ -37,6 +39,18 @@ public class AstraShard : ItemInteract
         }
     }
 
+    public void ResetShard()
+    {
+        isActivated = false;
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = true;
+        }
+
+        Debug.Log(" AstraShard Reset แล้ว - สามารถหยิบได้อีกครั้ง");
+    }
+
     public override bool CanInteract()
     {
         return !isActivated;
@@ -46,13 +60,13 @@ public class AstraShard : ItemInteract
     {
         if (!isActivated)
         {
-            Debug.Log("💎 [AstraShard] เข้าใกล้ Astra Shard - กด E เพื่อหยิบ");
+            Debug.Log(" [AstraShard] เข้าใกล้ Astra Shard - กด E เพื่อหยิบ");
         }
     }
 
     public override void OnPlayerExit()
     {
-        Debug.Log("💎 [AstraShard] ห่างจาก Astra Shard");
+        Debug.Log(" [AstraShard] ห่างจาก Astra Shard");
     }
 
     public override void OnInteractStart()
@@ -78,13 +92,13 @@ public class AstraShard : ItemInteract
         if (spriteRenderer != null)
             spriteRenderer.enabled = false;
 
-        Debug.Log("💎 [AstraShard] หยิบ Astra Shard สำเร็จ!");
+        Debug.Log(" [AstraShard] หยิบ Astra Shard สำเร็จ!");
         ShowClassSelection();
     }
 
     public override void ApplyEffect()
     {
-        Debug.Log("💎 [AstraShard] ApplyEffect");
+        Debug.Log(" [AstraShard] ApplyEffect");
     }
 
     public void ShowClassSelection()
