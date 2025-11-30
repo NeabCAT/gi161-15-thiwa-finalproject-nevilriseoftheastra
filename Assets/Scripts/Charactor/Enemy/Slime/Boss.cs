@@ -4,16 +4,20 @@ using UnityEngine;
 public class Boss : Enemy
 {
     [Header("Boss Summon Settings")]
-    [SerializeField] private GameObject minionPrefab; // ลูกน้องที่จะเสก
-    [SerializeField] private int minionCount = 3; // จำนวนลูกน้องที่เสกต่อครั้ง
-    [SerializeField] private float summonRadius = 3f; // รัศมีการเสกรอบตัว
-    [SerializeField] private float summonCooldown = 8f; // คูลดาวน์การเสก
-    [SerializeField] private Color summonColor = Color.magenta; // สีตอนเสก
-    [SerializeField] private float summonDuration = 1.5f; // ระยะเวลาเสก
+    [SerializeField] private GameObject minionPrefab; 
+    [SerializeField] private int minionCount = 3; 
+    [SerializeField] private float summonRadius = 3f; 
+    [SerializeField] private float summonCooldown = 8f; 
+    [SerializeField] private Color summonColor = Color.magenta; 
+    [SerializeField] private float summonDuration = 1.5f; 
 
     [Header("Summon VFX")]
-    [SerializeField] private GameObject summonCirclePrefab; // วงแดงบอกตำแหน่ง spawn
-    [SerializeField] private float circleDisplayTime = 1f; // เวลาแสดงวงก่อน spawn
+    [SerializeField] private GameObject summonCirclePrefab; 
+    [SerializeField] private float circleDisplayTime = 1f; 
+
+    [Header("Boss Shooting Settings")]
+    [SerializeField] private float shootCooldown = 3f; 
+    [SerializeField] private bool canShootWhileSummoning = false; 
 
     [Header("Victory UI")]
     [SerializeField] private BossVictoryUI victoryUI;
@@ -21,37 +25,74 @@ public class Boss : Enemy
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
     private bool canSummon = true;
+    private bool canShoot = true;
     private bool isSummoning = false;
+    private Shooter shooter;
 
     protected override void Awake()
     {
         base.Awake();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        shooter = GetComponent<Shooter>();
+
         if (spriteRenderer != null)
         {
             originalColor = spriteRenderer.color;
+        }
+
+        if (shooter == null)
+        {
+            Debug.LogWarning($"⚠️ [{gameObject.name}] ไม่มี Shooter Component!");
         }
     }
 
     private void Update()
     {
-        if (!isDead)
+        if (!isDead && PlayerController.Instance != null)
         {
-            if (!isSummoning && canSummon && PlayerController.Instance != null)
-            {
-                float distanceToPlayer = Vector2.Distance(transform.position, PlayerController.Instance.transform.position);
+            float distanceToPlayer = Vector2.Distance(transform.position, PlayerController.Instance.transform.position);
 
-                if (distanceToPlayer < attackRange)
+            // เช็คระยะในการโจมตี
+            if (distanceToPlayer < attackRange)
+            {
+                // ยิงกระสุน
+                bool canShootNow = canShootWhileSummoning ? canShoot : (canShoot && !isSummoning);
+                if (canShootNow)
+                {
+                    ShootAtPlayer();
+                }
+
+                // เสกลูกน้อง
+                if (!isSummoning && canSummon)
                 {
                     StartCoroutine(SummonMinionsRoutine());
                 }
             }
 
+            // เคลื่อนที่ (ยกเว้นตอนเสก)
             if (!isSummoning)
             {
                 MovementStateControl();
             }
         }
+    }
+
+    private void ShootAtPlayer()
+    {
+        if (shooter != null)
+        {
+            canShoot = false;
+            shooter.Attack();
+            StartCoroutine(ShootCooldownRoutine());
+            Debug.Log($"🔫 [{gameObject.name}] ยิงกระสุน!");
+        }
+    }
+
+    private IEnumerator ShootCooldownRoutine()
+    {
+        yield return new WaitForSeconds(shootCooldown);
+        canShoot = true;
+        Debug.Log($"✅ [{gameObject.name}] พร้อมยิงอีกครั้ง!");
     }
 
     private IEnumerator SummonMinionsRoutine()
@@ -183,13 +224,11 @@ public class Boss : Enemy
         {
             animator.SetTrigger("Die");
         }
-
     }
-
 
     private IEnumerator ShowVictoryAfterDeath()
     {
-        Debug.Log("🎬 ShowVictoryAfterDeath เริ่มต้น");
+        Debug.Log("ShowVictoryAfterDeath เริ่มต้น");
 
         // ฆ่า Enemy ทุกตัวในฉาก
         KillAllEnemies();
@@ -236,9 +275,8 @@ public class Boss : Enemy
             }
         }
 
-        Debug.Log($"🔥 ฆ่า Enemy ทั้งหมด {allEnemies.Length - 1} ตัว!");
+        Debug.Log($"🔥 ฆ่า Enemy ทั้งหมด {allEnemies.Length - 1} ตัv!");
     }
-
 
     private void PlayPlayerVictoryAnimation()
     {
@@ -248,18 +286,17 @@ public class Boss : Enemy
 
             if (playerAnimator != null)
             {
-                // เล่น Victory Animation
                 playerAnimator.SetTrigger("Victory");
-                Debug.Log("🎉 Player Victory Animation!");
+                Debug.Log("Player Victory Animation!");
             }
             else
             {
-                Debug.LogWarning("⚠️ Player ไม่มี Animator!");
+                Debug.LogWarning("Player ไม่มี Animator!");
             }
         }
         else
         {
-            Debug.LogWarning("⚠️ ไม่พบ Player.Instance!");
+            Debug.LogWarning("ไม่พบ Player.Instance!");
         }
     }
 }
