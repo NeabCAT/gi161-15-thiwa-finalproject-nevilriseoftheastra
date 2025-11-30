@@ -104,13 +104,13 @@ GameObject:
   - component: {fileID: 2222832725669433755}
   - component: {fileID: 1907339823500563606}
   - component: {fileID: 1409282608403051507}
-  - component: {fileID: 1587451463355557187}
   - component: {fileID: 2173140181349729062}
   - component: {fileID: 342518018211963636}
   - component: {fileID: 9122276658655729932}
   - component: {fileID: 338726343950635504}
   - component: {fileID: 1669754485225392203}
   - component: {fileID: 1620136163707802479}
+  - component: {fileID: 7005337378650934223}
   m_Layer: 0
   m_Name: Boss Slime
   m_TagString: Untagged
@@ -291,28 +291,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPathfinding
   moveSpeed: 2
---- !u!114 &1587451463355557187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4967049517752993936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23dd3c543a28fa24bae57913b5aefe2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  maxHealth: 2
-  startingHealth: 3
-  deathVFXPrefab: {fileID: 5279154080319479446, guid: 9e4406aa92ddb2540859e0a5bfb0cce4, type: 3}
-  knockBackThrust: 15
-  roamChangeDirFloat: 2
-  attackRange: 10
-  enemyType: {fileID: 1669754485225392203}
-  attackCooldown: 2
-  stopMovingWhileAttacking: 0
-  deathAnimationDuration: 1
 --- !u!114 &2173140181349729062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,3 +379,34 @@ MonoBehaviour:
   goldCoin: {fileID: 0}
   healthGlobe: {fileID: 8431709808952348351, guid: 13cedf2ddd8d90e4b9e1a1e7f3d45a17, type: 3}
   staminaGlobe: {fileID: 0}
+--- !u!114 &7005337378650934223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4967049517752993936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d1ee8fd8df749498311add6efcf6e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Boss
+  maxHealth: 35
+  startingHealth: 35
+  deathVFXPrefab: {fileID: 5279154080319479446, guid: 9e4406aa92ddb2540859e0a5bfb0cce4, type: 3}
+  knockBackThrust: 15
+  roamChangeDirFloat: 2
+  attackRange: 5
+  enemyType: {fileID: 1669754485225392203}
+  attackCooldown: 2
+  stopMovingWhileAttacking: 0
+  deathAnimationDuration: 1
+  minionPrefab: {fileID: 2150712642738146909, guid: 07899bbb5e299ce4ea6e0dae0969d711, type: 3}
+  minionCount: 3
+  summonRadius: 3
+  summonCooldown: 8
+  summonColor: {r: 0.33490568, g: 0.8119778, b: 1, a: 0.5529412}
+  summonDuration: 1.5
+  summonCirclePrefab: {fileID: 0}
+  circleDisplayTime: 1
+  victoryUI: {fileID: 0}

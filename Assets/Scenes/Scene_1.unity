@@ -53873,11 +53873,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5008989994632272502, guid: 07899bbb5e299ce4ea6e0dae0969d711, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2150712642738146909, guid: 07899bbb5e299ce4ea6e0dae0969d711, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1822549742}
   m_SourcePrefab: {fileID: 100100000, guid: 07899bbb5e299ce4ea6e0dae0969d711, type: 3}
+--- !u!1 &1822549741 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2150712642738146909, guid: 07899bbb5e299ce4ea6e0dae0969d711, type: 3}
+  m_PrefabInstance: {fileID: 1822549740}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1822549742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822549741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91abc210d6bd5b542883f1c942145d05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Slime
+  maxHealth: 2
+  startingHealth: 3
+  deathVFXPrefab: {fileID: 5279154080319479446, guid: 9e4406aa92ddb2540859e0a5bfb0cce4, type: 3}
+  knockBackThrust: 15
+  roamChangeDirFloat: 2
+  attackRange: 5
+  enemyType: {fileID: 0}
+  attackCooldown: 2
+  stopMovingWhileAttacking: 0
+  deathAnimationDuration: 1
+  chaseSpeed: 3
+  attackDistance: 1
+  roamChangeDirTime: 2
 --- !u!4 &1825706633 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3490716778394147788, guid: b8c4d7ae0165ef046a28e22ec43667ec, type: 3}

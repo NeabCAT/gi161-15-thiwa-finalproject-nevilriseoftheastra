@@ -10,7 +10,7 @@ public class Enemy : Character
 
     [Header("AI Settings")]
     [SerializeField] private float roamChangeDirFloat = 2f;
-    [SerializeField] private float attackRange = 5f;
+    [SerializeField] protected float attackRange = 5f; // ⭐ เปลี่ยนเป็น protected
     [SerializeField] private MonoBehaviour enemyType;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private bool stopMovingWhileAttacking = false;
@@ -20,9 +20,9 @@ public class Enemy : Character
 
     private Knockback knockback;
     private Flash flash;
-    private EnemyPathfinding enemyPathfinding;
-    private Animator animator;
-    private bool isDead = false;
+    protected EnemyPathfinding enemyPathfinding; // ⭐ เปลี่ยนเป็น protected
+    protected Animator animator; // ⭐ เปลี่ยนเป็น protected
+    protected bool isDead = false; // ⭐ เปลี่ยนเป็น protected
 
     private bool canAttack = true;
     private Vector2 roamPosition;
@@ -61,7 +61,8 @@ public class Enemy : Character
         }
     }
 
-    private void MovementStateControl()
+    // ⭐ เปลี่ยนเป็น protected เพื่อให้ Boss เรียกใช้ได้
+    protected void MovementStateControl()
     {
         switch (state)
         {
@@ -196,6 +197,14 @@ public class Enemy : Character
 
         // ⭐ บังคับ Destroy (สำรอง) - จะ Destroy หลัง Animation จบแน่นอน
         Destroy(gameObject, deathAnimationDuration + 0.5f);
+    }
+
+    /// <summary>
+    /// ตรวจสอบว่าตายหรือยัง (สำหรับเรียกจากภายนอก)
+    /// </summary>
+    public bool IsAlive()
+    {
+        return !isDead;
     }
 
     private IEnumerator DeathAnimationRoutine()
