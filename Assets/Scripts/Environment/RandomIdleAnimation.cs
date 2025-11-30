@@ -26,7 +26,6 @@ public class RandomIdleAnimation : MonoBehaviour
 
         AnimatorStateInfo state = myAnimator.GetCurrentAnimatorStateInfo(0);
 
-        // เล่นอนิเมชั่นเดิม แต่เริ่มจากจุดสุ่ม
         myAnimator.Play(state.fullPathHash, 0, Random.Range(0f, 1f));
     }
 }
