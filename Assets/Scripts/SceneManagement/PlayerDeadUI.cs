@@ -4,9 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// UI แสดงเมื่อ Player ตาย
-/// </summary>
+
 public class PlayerDeadUI : MonoBehaviour
 {
     [Header("UI References")]
@@ -59,9 +57,6 @@ public class PlayerDeadUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// เรียกฟังก์ชันนี้เมื่อ Player ตาย
-    /// </summary>
     public void ShowDeadUI()
     {
         Debug.Log("💀 ShowDeadUI ถูกเรียก!");
@@ -117,9 +112,6 @@ public class PlayerDeadUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Animate Text แบบทีละตัวอักษร
-    /// </summary>
     private IEnumerator AnimateText(TextMeshProUGUI textComponent, float delay = 0f)
     {
         yield return new WaitForSecondsRealtime(delay);
@@ -133,10 +125,6 @@ public class PlayerDeadUI : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.05f);
         }
     }
-
-    /// <summary>
-    /// ปุ่ม Restart - โหลดซีนใหม่
-    /// </summary>
     private void OnRestartClicked()
     {
         Debug.Log("🔄 Restart Level!");
@@ -144,16 +132,16 @@ public class PlayerDeadUI : MonoBehaviour
         // รีเซ็ต Time.timeScale
         Time.timeScale = 1f;
 
-        // ⭐ ปิด UI ก่อน (สำคัญ!)
+        // ปิด UI ก่อน
         HideDeadUI();
 
-        // ⭐ ล้าง Class และอาวุธก่อนโหลดซีน
+        // ล้าง Class และอาวุธก่อนโหลดซีน
         if (Player.Instance != null)
         {
             Player.Instance.ResetPlayer();
         }
 
-        // ⭐ โหลดซีนใหม่และรอให้โหลดเสร็จ
+        // โหลดซีนใหม่และรอให้โหลดเสร็จ
         StartCoroutine(RestartSceneRoutine());
     }
 
@@ -188,9 +176,6 @@ public class PlayerDeadUI : MonoBehaviour
         Debug.Log("✅ Restart สำเร็จ!");
     }
 
-    /// <summary>
-    /// ปุ่ม Main Menu - กลับไปหน้าเมนู
-    /// </summary>
     private void OnMainMenuClicked()
     {
         Debug.Log("🏠 Return to Main Menu");
@@ -211,9 +196,6 @@ public class PlayerDeadUI : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    /// <summary>
-    /// ซ่อน Dead UI (ถ้าต้องการใช้)
-    /// </summary>
     public void HideDeadUI()
     {
         Time.timeScale = 1f;

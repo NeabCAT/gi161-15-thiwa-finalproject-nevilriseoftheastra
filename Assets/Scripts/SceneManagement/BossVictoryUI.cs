@@ -4,9 +4,6 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// UI แสดงเมื่อชนะบอส
-/// </summary>
 public class BossVictoryUI : MonoBehaviour
 {
     [Header("UI References")]
@@ -60,9 +57,6 @@ public class BossVictoryUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// เรียกฟังก์ชันนี้เมื่อบอสตาย
-    /// </summary>
     public void ShowVictory(string bossName = "Boss")
     {
         Debug.Log($"🎉 ShowVictory ถูกเรียก! Boss: {bossName}");
@@ -129,9 +123,6 @@ public class BossVictoryUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Animate Text แบบทีละตัวอักษร
-    /// </summary>
     private IEnumerator AnimateText(TextMeshProUGUI textComponent, float delay = 0f)
     {
         yield return new WaitForSecondsRealtime(delay);
@@ -146,9 +137,6 @@ public class BossVictoryUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// ปุ่ม Restart - โหลดซีนที่ 1
-    /// </summary>
     private void OnRestartClicked()
     {
         Debug.Log("🔄 Restart to Scene 1!");
@@ -200,9 +188,6 @@ public class BossVictoryUI : MonoBehaviour
         Debug.Log("✅ Restart สำเร็จ!");
     }
 
-    /// <summary>
-    /// ปุ่ม Main Menu - กลับไปหน้าเมนู
-    /// </summary>
     private void OnMainMenuClicked()
     {
         Debug.Log("🏠 Return to Main Menu");
@@ -223,9 +208,7 @@ public class BossVictoryUI : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    /// <summary>
-    /// ซ่อน Victory UI
-    /// </summary>
+
     public void HideVictory()
     {
         Time.timeScale = 1f;

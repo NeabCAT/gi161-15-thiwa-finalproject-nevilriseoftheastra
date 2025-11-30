@@ -18,7 +18,6 @@ public class TransparentDetection : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         tilemap = GetComponent<Tilemap>();
 
-        // ตรวจสอบว่ามี component อย่างใดอย่างหนึ่งหรือไม่
         if (spriteRenderer == null && tilemap == null)
         {
             Debug.LogError($"GameObject '{gameObject.name}' ต้องมี SpriteRenderer หรือ Tilemap component!");
@@ -27,12 +26,10 @@ public class TransparentDetection : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // เช็คว่า GameObject นี้ยัง active อยู่หรือไม่
         if (!gameObject.activeInHierarchy) return;
 
         if (other.gameObject.GetComponent<PlayerController>() != null)
         {
-            // หยุด Coroutine เก่าก่อน (ถ้ามี)
             if (currentFadeCoroutine != null)
             {
                 StopCoroutine(currentFadeCoroutine);
@@ -51,12 +48,10 @@ public class TransparentDetection : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        // เช็คว่า GameObject นี้ยัง active อยู่หรือไม่
         if (!gameObject.activeInHierarchy) return;
 
         if (other.gameObject.GetComponent<PlayerController>() != null)
         {
-            // หยุด Coroutine เก่าก่อน (ถ้ามี)
             if (currentFadeCoroutine != null)
             {
                 StopCoroutine(currentFadeCoroutine);

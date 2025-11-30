@@ -27,9 +27,6 @@ public class CameraController : Singleton<CameraController>
         SetPlayerCameraFollow();
     }
 
-    /// <summary>
-    /// ⭐ เมื่อโหลดซีนใหม่ ให้หา Player ใหม่
-    /// </summary>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log($"📸 ซีนโหลดเสร็จ: {scene.name} - กำลังหา Player ใหม่...");
@@ -47,9 +44,6 @@ public class CameraController : Singleton<CameraController>
         SetPlayerCameraFollow();
     }
 
-    /// <summary>
-    /// ตั้งค่ากล้องให้ตาม Player
-    /// </summary>
     public void SetPlayerCameraFollow()
     {
         // หา Cinemachine Camera ใหม่ทุกครั้ง
@@ -88,9 +82,6 @@ public class CameraController : Singleton<CameraController>
         }
     }
 
-    /// <summary>
-    /// เรียกฟังก์ชันนี้เมื่อต้องการ Refresh กล้อง
-    /// </summary>
     public void RefreshCamera()
     {
         cinemachineCamera = null; // รีเซ็ตเพื่อหาใหม่

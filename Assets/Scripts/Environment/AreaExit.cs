@@ -16,7 +16,7 @@ public class AreaExit : MonoBehaviour
     [SerializeField] private SpriteRenderer doorSprite;
     [SerializeField] private Color lockedColor = Color.red;
     [SerializeField] private Color unlockedColor = Color.green;
-    [SerializeField] private GameObject lockIcon; // ไอคอนล็อก (ถ้ามี)
+    [SerializeField] private GameObject lockIcon; 
 
     private void Start()
     {
@@ -49,9 +49,6 @@ public class AreaExit : MonoBehaviour
         SceneManager.LoadScene(sceneToLoad);
     }
 
-    /// <summary>
-    /// ล็อกประตู
-    /// </summary>
     public void LockDoor()
     {
         isLocked = true;
@@ -59,9 +56,6 @@ public class AreaExit : MonoBehaviour
         Debug.Log("🔒 ประตูถูกล็อก");
     }
 
-    /// <summary>
-    /// ปลดล็อกประตู
-    /// </summary>
     public void UnlockDoor()
     {
         isLocked = false;
@@ -69,27 +63,18 @@ public class AreaExit : MonoBehaviour
         Debug.Log("🔓 ประตูถูกปลดล็อก!");
     }
 
-    /// <summary>
-    /// อัพเดท Visual Feedback
-    /// </summary>
     private void UpdateVisual()
     {
-        // เปลี่ยนสี Sprite (ถ้ามี)
         if (doorSprite != null)
         {
             doorSprite.color = isLocked ? lockedColor : unlockedColor;
         }
 
-        // แสดง/ซ่อน ไอคอนล็อก (ถ้ามี)
         if (lockIcon != null)
         {
             lockIcon.SetActive(isLocked);
         }
     }
-
-    /// <summary>
-    /// เช็คสถานะประตู (สำหรับ Debug)
-    /// </summary>
     public bool IsLocked()
     {
         return isLocked;

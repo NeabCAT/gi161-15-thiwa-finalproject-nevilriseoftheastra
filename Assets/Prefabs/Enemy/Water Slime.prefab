@@ -14,11 +14,11 @@ GameObject:
   - component: {fileID: 965011331830705031}
   - component: {fileID: 1011156003854843489}
   - component: {fileID: 2780523691262194517}
-  - component: {fileID: 5008989994632272502}
   - component: {fileID: 1552694714522656849}
   - component: {fileID: 3206593636174437161}
   - component: {fileID: 5860193913704962102}
   - component: {fileID: 6996485152091154556}
+  - component: {fileID: 12825512964515436}
   m_Layer: 0
   m_Name: Water Slime
   m_TagString: Untagged
@@ -199,28 +199,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPathfinding
   moveSpeed: 2
---- !u!114 &5008989994632272502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2150712642738146909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23dd3c543a28fa24bae57913b5aefe2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  maxHealth: 2
-  startingHealth: 3
-  deathVFXPrefab: {fileID: 5279154080319479446, guid: 9e4406aa92ddb2540859e0a5bfb0cce4, type: 3}
-  knockBackThrust: 15
-  roamChangeDirFloat: 2
-  attackRange: 5
-  enemyType: {fileID: 0}
-  attackCooldown: 2
-  stopMovingWhileAttacking: 0
-  deathAnimationDuration: 1
 --- !u!114 &1552694714522656849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,6 +253,31 @@ MonoBehaviour:
   goldCoin: {fileID: 8431709808952348351, guid: a0c62d8dbc1dcbf4594fd4c4ffca2c55, type: 3}
   healthGlobe: {fileID: 0}
   staminaGlobe: {fileID: 0}
+--- !u!114 &12825512964515436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2150712642738146909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91abc210d6bd5b542883f1c942145d05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Slime
+  maxHealth: 8
+  startingHealth: 8
+  deathVFXPrefab: {fileID: 5279154080319479446, guid: 9e4406aa92ddb2540859e0a5bfb0cce4, type: 3}
+  knockBackThrust: 15
+  roamChangeDirFloat: 2
+  attackRange: 5
+  enemyType: {fileID: 0}
+  attackCooldown: 2
+  stopMovingWhileAttacking: 0
+  deathAnimationDuration: 1
+  chaseSpeed: 3
+  attackDistance: 1
+  roamChangeDirTime: 2
 --- !u!1 &6859305544902021541
 GameObject:
   m_ObjectHideFlags: 0

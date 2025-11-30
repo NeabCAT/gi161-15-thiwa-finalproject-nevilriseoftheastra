@@ -3,9 +3,9 @@ using UnityEngine;
 public class Slime : Enemy
 {
     [Header("Slime Settings")]
-    [SerializeField] private float chaseSpeed = 3f; // ความเร็วไล่ Player
-    [SerializeField] private float attackDistance = 1f; // ระยะโจมตี
-    [SerializeField] private float roamChangeDirTime = 2f; // เวลาเปลี่ยนทิศเดิน
+    [SerializeField] private float chaseSpeed = 3f; 
+    [SerializeField] private float attackDistance = 1f; 
+    [SerializeField] private float roamChangeDirTime = 2f; 
 
     private Vector2 roamPosition;
     private float timeRoaming = 0f;

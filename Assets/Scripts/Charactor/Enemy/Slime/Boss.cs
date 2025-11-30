@@ -1,9 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// Boss ที่เสกลูกน้อง - สืบทอดจาก Enemy และรองรับ Shooter
-/// </summary>
 public class Boss : Enemy
 {
     [Header("Boss Summon Settings")]
@@ -19,7 +16,7 @@ public class Boss : Enemy
     [SerializeField] private float circleDisplayTime = 1f; // เวลาแสดงวงก่อน spawn
 
     [Header("Victory UI")]
-    [SerializeField] private BossVictoryUI victoryUI; // Reference ไปยัง Victory UI
+    [SerializeField] private BossVictoryUI victoryUI;
 
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
@@ -40,19 +37,16 @@ public class Boss : Enemy
     {
         if (!isDead)
         {
-            // ตรวจสอบการเสกลูกน้อง
             if (!isSummoning && canSummon && PlayerController.Instance != null)
             {
                 float distanceToPlayer = Vector2.Distance(transform.position, PlayerController.Instance.transform.position);
 
-                // ถ้าอยู่ในระยะโจมตี ให้เริ่มเสก
                 if (distanceToPlayer < attackRange)
                 {
                     StartCoroutine(SummonMinionsRoutine());
                 }
             }
 
-            // เรียก Movement ของ Enemy ตามปกติ
             if (!isSummoning)
             {
                 MovementStateControl();
@@ -60,9 +54,6 @@ public class Boss : Enemy
         }
     }
 
-    /// <summary>
-    /// เสกลูกน้องพร้อม VFX
-    /// </summary>
     private IEnumerator SummonMinionsRoutine()
     {
         canSummon = false;
@@ -82,7 +73,7 @@ public class Boss : Enemy
             spriteRenderer.color = summonColor;
         }
 
-        // เล่น Animation เสก (ถ้ามี)
+        // เล่น Animation เสก
         if (animator != null)
         {
             animator.SetTrigger("Summon");
@@ -146,9 +137,6 @@ public class Boss : Enemy
         StartCoroutine(SummonCooldownRoutine());
     }
 
-    /// <summary>
-    /// คูลดาวน์การเสก
-    /// </summary>
     private IEnumerator SummonCooldownRoutine()
     {
         yield return new WaitForSeconds(summonCooldown);
@@ -156,9 +144,6 @@ public class Boss : Enemy
         Debug.Log($"✅ [{gameObject.name}] พร้อมเสกอีกครั้ง!");
     }
 
-    /// <summary>
-    /// Override การตายเพื่อเคลียร์สถานะ
-    /// </summary>
     public override void IsDead()
     {
         isSummoning = false;
@@ -168,22 +153,10 @@ public class Boss : Enemy
             spriteRenderer.color = originalColor;
         }
 
-        // ⭐ ห้าม StopAllCoroutines! มันจะหยุด ShowVictoryAfterDeath
-        // StopAllCoroutines();
-
-        // เริ่ม Coroutine แสดง Victory UI หลัง Death Animation
         StartCoroutine(ShowVictoryAfterDeath());
-
-        // ⭐ ห้าม Destroy ตัวเอง! ให้รอ Coroutine ทำงานจบก่อน
-        // base.IsDead();
-
-        // แทนที่จะเรียก base.IsDead() ให้ทำแบบนี้:
         HandleBossDeath();
     }
 
-    /// <summary>
-    /// จัดการการตายของ Boss โดยไม่ Destroy ทันที
-    /// </summary>
     private void HandleBossDeath()
     {
         if (isDead) return;
@@ -211,12 +184,9 @@ public class Boss : Enemy
             animator.SetTrigger("Die");
         }
 
-        // ⭐ ไม่ Destroy! ให้รอ ShowVictoryAfterDeath ทำงานจบก่อน
     }
 
-    /// <summary>
-    /// รอ Death Animation เสร็จแล้วค่อยแสดง Victory UI
-    /// </summary>
+
     private IEnumerator ShowVictoryAfterDeath()
     {
         Debug.Log("🎬 ShowVictoryAfterDeath เริ่มต้น");
@@ -229,41 +199,36 @@ public class Boss : Enemy
 
         // รอให้ Death Animation เล่นเสร็จ
         float deathAnimationTime = 1.5f;
-        Debug.Log($"⏰ รอ {deathAnimationTime} วินาที...");
+        Debug.Log($"รอ {deathAnimationTime} วินาที...");
         yield return new WaitForSeconds(deathAnimationTime);
 
-        Debug.Log("🎯 กำลังเรียก ShowVictory...");
+        Debug.Log("กำลังเรียก ShowVictory...");
 
         // แสดง Victory UI
         if (victoryUI != null)
         {
-            Debug.Log("✅ Victory UI พบแล้ว! เรียก ShowVictory()");
+            Debug.Log("Victory UI พบแล้ว! เรียก ShowVictory()");
             victoryUI.ShowVictory(gameObject.name);
         }
         else
         {
-            Debug.LogError("❌ Victory UI เป็น NULL! ลืมลาก Reference ใน Inspector?");
+            Debug.LogError("Victory UI เป็น NULL! ลืมลาก Reference ใน Inspector?");
         }
 
         // รอให้ UI แสดงผล
         yield return new WaitForSeconds(0.5f);
 
         // ตอนนี้ถึงค่อย Destroy Boss
-        Debug.Log("🗑️ Destroy Boss GameObject");
+        Debug.Log("Destroy Boss GameObject");
         Destroy(gameObject);
     }
 
-    /// <summary>
-    /// ฆ่า Enemy ทุกตัวในฉาก
-    /// </summary>
     private void KillAllEnemies()
     {
-        // หา Enemy ทุกตัว (ไม่รวมตัวเอง)
         Enemy[] allEnemies = FindObjectsOfType<Enemy>();
 
         foreach (Enemy enemy in allEnemies)
         {
-            // ไม่ฆ่าตัวเอง และไม่ฆ่าตัวที่ตายแล้ว
             if (enemy != this && enemy != null && enemy.IsAlive())
             {
                 enemy.IsDead();
@@ -274,9 +239,7 @@ public class Boss : Enemy
         Debug.Log($"🔥 ฆ่า Enemy ทั้งหมด {allEnemies.Length - 1} ตัว!");
     }
 
-    /// <summary>
-    /// เล่น Victory Animation ของ Player
-    /// </summary>
+
     private void PlayPlayerVictoryAnimation()
     {
         if (Player.Instance != null)

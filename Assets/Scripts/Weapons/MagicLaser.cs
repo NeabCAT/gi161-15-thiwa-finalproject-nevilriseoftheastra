@@ -19,8 +19,6 @@ public class MagicLaser : MonoBehaviour
         spriteRenderer.drawMode = SpriteDrawMode.Tiled;
         spriteRenderer.tileMode = SpriteTileMode.Continuous;
 
-        // ตั้งค่าสีให้มี Glow (ถ้าต้องการ)
-        // spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
     }
 
     private void Start()
